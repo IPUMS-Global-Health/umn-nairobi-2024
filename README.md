@@ -126,7 +126,7 @@ workshop :hourglass:
 
 ### That’s it!
 
-You should now be ready to follow along with the workshop!
+You should now be ready to follow along with the workshop! 🏁
 
 ## Slides and Source Code
 
