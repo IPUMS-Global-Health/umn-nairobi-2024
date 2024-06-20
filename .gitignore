@@ -51,3 +51,5 @@ rsconnect/
 .DS_Store
 
 data/local/
+data/idhs*
+data/geo_ke1989_2014/

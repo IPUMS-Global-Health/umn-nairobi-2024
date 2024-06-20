@@ -13,4 +13,4 @@ ke_borders_clean <- ke_borders |>
   st_make_valid() |> 
   st_simplify(dTolerance = 1)
 
-st_write(ke_borders_clean, "data/geo_ke1989_2014/geo_ke1989_2014_cleaned.shp")
+st_write(ke_borders_clean, "data/geo_ke1989_2014_cleaned.shp")
