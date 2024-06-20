@@ -1,12 +1,12 @@
-July 2024 AAH Data Analysis Workshop
+UMN Multilevel Modeling + Climate Data Workshop
 ================
 
 ### Using R to understand climate and population health
 
 ## Welcome!
 
-Welcome to the home page for the 2024 AAH population health and climate
-data workshop.
+Welcome to the home page for the 2024 UMN Multilevel Modeling and
+Climate Data workshop.
 
 This GitHub repository contains presentation slides and other materials
 that will be used in the workshop.
@@ -43,7 +43,7 @@ on building an IPUMS DHS data extract.
 
 1.  To reproduce the data used in this workshop, select the following
     samples and variables:
-    - **Sample:** Kenya 2022 (CONFIRM) :kenya:
+    - **Sample:** Kenya 2014 :kenya:
     - **Variables:** (CONFIRM)
       - [`BIRTHWT`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWT%22)%60)
       - [`HEIGHTFEM`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22HEIGHTFEM%22)%60)
@@ -80,19 +80,19 @@ There are 2 options for downloading the files used in this workshop:
 
 <!-- -->
 
-    git clone https://github.com/IPUMS-Global-Health/aah-nairobi-2024.git
+    git clone https://github.com/IPUMS-Global-Health/umn-nairobi-2024.git
 
 2.  *Otherwise*, you can
-    [download](https://github.com/IPUMS-Global-Health/aah-nairobi-2024/archive/refs/heads/main.zip)
+    [download](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/archive/refs/heads/main.zip)
     the workshop files manually
     - :open_file_folder: Open the downloaded zip file
     - :rotating_light: **Windows users** may also need to download
       decompression software (e.g. [7-Zip](https://www.7-zip.org/)) to
-      decompress the zip file. (CONFIRM)
+      decompress the zip file.
 
 ### 5. Launch the workshop’s RStudio Project
 
-Open the file `aah-nairobi-2024.Rproj` found in this project folder.
+Open the file `umn-nairobi-2024.Rproj` found in this project folder.
 
 This will launch the workshop project in a new RStudio environment.
 :rocket:
@@ -130,7 +130,5 @@ You should now be ready to follow along with the workshop!
 
 ## Slides and Source Code
 
-[Workshop
-slides](https://ipums-global-health.github.io/ined-pma-2022/slides.html)
-were built with [Quarto and
+Workshop slides were built with [Quarto and
 Revealjs](https://quarto.org/docs/presentations/revealjs/).
