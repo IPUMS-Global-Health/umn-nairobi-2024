@@ -45,11 +45,11 @@ on building an IPUMS DHS data extract.
     samples and variables:
     - **Sample:** Kenya 2014 :kenya:
     - **Variables:** (CONFIRM)
-      - [`BIRTHWT`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWT%22)%60)
-      - [`HEIGHTFEM`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22HEIGHTFEM%22)%60)
-      - [`KIDSEX`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDSEX%22)%60)
-      - [`KIDDOBCMC`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDDOBCMC%22)%60)
-      - [`BIRTHWTREF`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWTREF%22)%60)
+      - [`BIRTHWT`](https://idhsdata.org/idhs-action/variables/BIRTHWT)
+      - [`HEIGHTFEM`](https://idhsdata.org/idhs-action/variables/HEIGHTFEM)
+      - [`KIDSEX`](https://idhsdata.org/idhs-action/variables/KIDSEX)
+      - [`KIDDOBCMC`](https://idhsdata.org/idhs-action/variables/KIDDOBCMC)
+      - [`BIRTHWTREF`](https://idhsdata.org/idhs-action/variables/BIRTHWTREF)
       - [`FLOOR`](https://idhsdata.org/idhs-action/variables/FLOOR)
       - [`TOILETTYPE`](https://idhsdata.org/idhs-action/variables/TOILETTYPE)
       - [`DRINKWTR`](https://idhsdata.org/idhs-action/variables/DRINKWTR)
