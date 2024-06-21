@@ -50,6 +50,12 @@ on building an IPUMS DHS data extract.
       - [`KIDSEX`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDSEX%22)%60)
       - [`KIDDOBCMC`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDDOBCMC%22)%60)
       - [`BIRTHWTREF`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWTREF%22)%60)
+      - [`FLOOR`](https://idhsdata.org/idhs-action/variables/FLOOR)
+      - [`TOILETTYPE`](https://idhsdata.org/idhs-action/variables/TOILETTYPE)
+      - [`DRINKWTR`](https://idhsdata.org/idhs-action/variables/DRINKWTR)
+      - [`HWHAZWHO`](https://idhsdata.org/idhs-action/variables/HWHAZWHO)
+      - [`FEVRECENT`](https://idhsdata.org/idhs-action/variables/FEVRECENT)
+      - [`DIARRECENT`](https://idhsdata.org/idhs-action/variables/DIARRECENT)
 2.  Submit your extract request through the IPUMS DHS interface.
 3.  When the it has finished processing,
     [download](https://tech.popdata.org/dhs-research-hub/posts/2024-02-02-download-dhs-data/#download-data)
@@ -126,7 +132,7 @@ workshop :hourglass:
 
 ### That’s it!
 
-You should now be ready to follow along with the workshop! 🏁
+You should now be ready to follow along with the workshop!
 
 ## Slides and Source Code
 
