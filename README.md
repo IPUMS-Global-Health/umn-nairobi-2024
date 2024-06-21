@@ -44,7 +44,7 @@ on building an IPUMS DHS data extract.
 1.  To reproduce the data used in this workshop, select the following
     samples and variables:
     - **Sample:** Kenya 2014 :kenya:
-    - **Variables:** (CONFIRM)
+    - **Variables:**
       - [`BIRTHWT`](https://idhsdata.org/idhs-action/variables/BIRTHWT)
       - [`HEIGHTFEM`](https://idhsdata.org/idhs-action/variables/HEIGHTFEM)
       - [`KIDSEX`](https://idhsdata.org/idhs-action/variables/KIDSEX)

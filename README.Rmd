@@ -45,7 +45,7 @@ instructions on building an IPUMS DHS data extract.
 1. To reproduce the data used in this workshop, select the following samples and 
 variables:
     -   **Sample:** Kenya 2014 :kenya:
-    -   **Variables:** (CONFIRM)
+    -   **Variables:**
         -   [`BIRTHWT`](`r ipumsr::ipums_website("dhs", launch = FALSE, var = "BIRTHWT")`)
         -   [`HEIGHTFEM`](`r ipumsr::ipums_website("dhs", launch = FALSE, var = "HEIGHTFEM")`)
         -   [`KIDSEX`](`r ipumsr::ipums_website("dhs", launch = FALSE, var = "KIDSEX")`)
