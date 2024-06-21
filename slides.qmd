@@ -1,9 +1,21 @@
 ---
-title: "Multilevel Modeling and Climate Data Analysis Workshop"
-subtitle: "Using R to understand climate and population health"
+title: Multilevel Modeling and Climate Data Analysis Workshop
+subtitle: Using R to add context to population health research
 author:
-  - Finn Roberts, IPUMS Senior Data Analyst
-  - Kathryn Grace, University of Minnesota
+    - name: |
+        <p style='font-size: 25px; margin-left: 50px'>
+          <img src='images/finn.png' width='100' style='vertical-align: middle'>
+          Finn Roberts <span style='opacity: 0.5;'>- IPUMS Senior Data Analyst</span>
+        </p>
+    - name: |
+        <p style='font-size: 25px; margin-left: 50px'>
+          <img src='images/kat.png' width='100' style='vertical-align: middle'>
+          Kathryn Grace <span style='opacity: 0.5;'>- UMN Department of Geography</span>
+        </p>
+  # - name: Finn Roberts
+  #   affiliations: IPUMS Senior Data Analyst
+  # - name: Kathryn Grace
+  #   affiliations: UMN Department of Geography
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -43,12 +55,14 @@ knitr::knit_hooks$set(output = function(x, options) {
   hook_output(x, options)
 })
 
+source("utils/utils.R")
+
 # Load fonts
 # sysfonts::font_add(
-#   family = "cabrito", 
+#   family = "cabrito",
 #   regular = "../../fonts/cabritosansnormregular-webfont.ttf"
 # )
-# 
+#
 # showtext::showtext_auto()
 ```
 
@@ -59,17 +73,17 @@ knitr::knit_hooks$set(output = function(x, options) {
 ::: nonincremental
 ::: {.fragment .fade-in fragment-index="1"}
 -   [The Demographic and Health Surveys
-    Program](https://dhsprogram.com/) (DHS) is a leading source of
-    population health data in many low- and middle- income countries
+Program](https://dhsprogram.com/) (DHS) is a leading source of
+population health data in many low- and middle- income countries
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   IPUMS DHS standardizes and disseminates DHS survey data across time
-    and space
+and space
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
-![](images/ipums_dhs.png){fig-align="center" height="400"}
+![](images/ipums_dhs.png){fig-align="center" height="350"}
 :::
 :::
 
@@ -82,7 +96,7 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   How do we understand how climate and environmental conditions are
-    related to population health?
+related to population health?
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -97,8 +111,8 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 -   Not very flexible...
 
-    -   You can't redefine environmental exposure in the way most
-        appropriate for *your* research
+-   You can't redefine environmental exposure in the way most
+appropriate for *your* research
 
 ## Using IPUMS DHS with Climate Data
 
@@ -112,9 +126,9 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 -   Does extreme heat impact child birth weight outcomes?
 
-    -   DHS survey data: **Kenya 2014 sample**
+-   DHS survey data: **Kenya 2014 sample**
 
-    -   Climate data: **CHIRTS**
+-   Climate data: **CHIRTS**
 
 # Outline
 
@@ -133,19 +147,19 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 ::: nonincremental
 -   Comprehensive instructions can be found in the [workshop
-    README](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab=readme-ov-file#july-2024-umn-data-analysis-workshop)
+README](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab=readme-ov-file#july-2024-umn-data-analysis-workshop)
 
 ::: {.fragment .fade-in}
 -   Setup includes:
 
     -   Registering for DHS / IPUMS DHS
-
+    
     -   Creating an IPUMS DHS data extract
-
+    
     -   Installing R + RStudio
-
+    
     -   Downloading workshop files and launching the workshop R project
-
+    
     -   Installing necessary R packages
 :::
 :::
@@ -162,7 +176,7 @@ materials](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab
 -   Statistical programming language
 -   Open-source and completely free
 -   Commonly used in social sciences, statistics, environmental
-    sciences, and more
+sciences, and more
 
 ![](images/r_logo.png){.absolute top="-20" right="50" height="200"}
 
@@ -171,8 +185,9 @@ materials](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab
 ::: {columns}
 ::: {.column width="60%"}
 -   You might already use other statistical software (SPSS, SAS, Excel,
-    etc.)
+etc.)
 -   Why use R?
+
     -   Reproducibility + automation
     -   Advanced statistics
     -   Visualization
@@ -204,6 +219,7 @@ Assignment Data types Basic arithmetic Comments / whitespace Function
 help documentation Packages Troubleshooting techniques Basic
 functions/functional programming Function syntax Jargon (function,
 argument, variable, assignment, pipe)
+c()! vectors, data.frames, etc.
 :::
 
 ## Load R Packages
@@ -230,15 +246,18 @@ library(ggspatial)
 
 ## Loading DHS tabular data
 
+:::{.nonincremental}
+:::{.fragment .fade-in}
 -   Recall that we downloaded **two** files for our IPUMS DHS extract
 
     -   The `.xml` file contains *metadata* about the file contents
     -   The `.dat.gz` file contains the actual data
-
+:::
+:::{.fragment .fade-in}
 -   ipumsr makes it easy to load IPUMS data using these files
 
-::: {.fragment .fade-in}
 ![](images/hex/ipumsr.png){fig-align="right" height="150"}
+:::
 :::
 
 ## Loading DHS tabular data {auto-animate="true"}
@@ -246,7 +265,7 @@ library(ggspatial)
 ```{r}
 #| eval: false
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00022.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
 ```
 
 ## Loading DHS tabular data {auto-animate="true"}
@@ -254,7 +273,7 @@ ke_ddi <- read_ipums_ddi("data/idhs_00022.xml")
 ```{r}
 #| eval: false
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00022.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
 
 # Use metadata to load the data correctly
 ke_dhs <- read_ipums_micro(ke_ddi)
@@ -263,8 +282,9 @@ ke_dhs <- read_ipums_micro(ke_ddi)
 ## Loading DHS tabular data {auto-animate="true"}
 
 ```{r}
+#| code-line-numbers: "|8|9|10|11-20"
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00022.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
 
 # Use metadata to load the data correctly
 ke_dhs <- read_ipums_micro(ke_ddi)
@@ -337,41 +357,56 @@ ke_dhs$RELIGION
 ```
 :::
 
-## Exploring our DHS data
+## Exploring DHS metadata {auto-animate="true"}
 
 -   The IPUMS DHS metadata allows us to see additional details about
-    each column
+each column
 
 ::: {.fragment .fade-in}
 ```{r}
-#| out.lines: 10
+#| eval: false
 # Display variable information for all variables in our file
 ipums_var_info(ke_dhs)
 ```
 :::
 
-## Exploring our DHS data
+
+## Exploring DHS metadata {auto-animate="true"}
+
+::: {.nonincremental}
+-   The IPUMS DHS metadata allows us to see additional details about
+each column
+:::
+
+```{r}
+#| out.lines: 10
+# Display variable information for all variables in our file
+ipums_var_info(ke_dhs)
+```
+
+## Exploring DHS metadata
 
 -   This metadata can be useful for determining whether our variables
-    need to be cleaned before analysis
+need to be cleaned before analysis
 
 ::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 ipums_var_desc(ke_dhs$BIRTHWT)
-#> [1] "For children born in the three to five years before the survey, 
-#> BIRTHWT (M19) reports the child's birthweight in kilos with three implied 
-#> decimal places (or, alternatively stated, in grams with no decimal places). 
+#> [1] "For children born in the three to five years before the survey,
+#> BIRTHWT (M19) reports the child's birthweight in kilos with three implied
+#> decimal places (or, alternatively stated, in grams with no decimal places).
 #> Children who were not weighed are coded 9996."
 ```
 :::
 
 -   In this case, we will need to adjust the decimal places and remove
-    missing values (later!)
+missing values (later!)
 
-## Exploring our DHS data
+## Exploring DHS metadata
 
 -   Some variables have labeled values
+
     -   Categorical data
 
 ::: {.fragment .fade-in}
@@ -381,10 +416,11 @@ ipums_val_labels(ke_dhs$RELIGION)
 ```
 :::
 
-## Exploring our DHS data
+## Exploring DHS metadata
 
 ::: nonincremental
 -   Some variables have labeled values
+
     -   Missing values
 :::
 
@@ -416,7 +452,7 @@ Should we do some viz here...?
 ## Cleaning DHS Data
 
 -   As we mentioned, some variables need to be prepraed ("cleaned")
-    before analysis
+before analysis
 
 -   For instance, missing `BIRTHWT` values are coded as large numbers
 
@@ -439,7 +475,7 @@ ke_dhs$BIRTHWT[1:5]
 ```{r}
 # For values greater than 9995, convert to NA (missing)
 # Otherwise, divide by 1000 to convert decimal places appropriately
-ke_dhs <- ke_dhs |> 
+ke_dhs <- ke_dhs |>
   mutate(BIRTHWT = if_else(BIRTHWT > 9995, NA, BIRTHWT / 1000))
 
 ke_dhs$BIRTHWT[1:5]
@@ -452,29 +488,140 @@ ke_dhs$BIRTHWT[1:5]
 
 -   We can do the same with several similar variables:
 
-*TODO: Add additional vars that need cleaning here!*
+:::{.fragment .fade-in}
+```{r}
+ke_dhs <- ke_dhs |>
+  mutate(
+    HEIGHTFEM = if_else(HEIGHTFEM >= 9994, NA, HEIGHTFEM / 10),
+    BIRTHWTREF = if_else(BIRTHWTREF >= 7, NA, BIRTHWTREF)
+  )
+```
+:::
+
+## Cleaning DHS data
+
+-   Some variables need to be recoded into simpler categories
+
+-   For `EDUCLVL`, we may want to combine the "Secondary" and "Higher" groups:
 
 ::: {.fragment .fade-in}
 ```{r}
-ke_dhs <- ke_dhs |> 
+ipums_val_labels(ke_dhs$EDUCLVL)
+```
+:::
+
+
+## Cleaning DHS data {auto-animate="true"}
+
+-   `case_when()` can be useful here
+
+-   You can specify multiple *conditions* and *replacement values*:
+
+:::{.fragment .fade-in}
+```{r}
+#| code-line-numbers: "|2|3|4|5"
+#| eval: false
+case_when(
+  ke_dhs$EDUCLVL == 8 ~ NA, 
+  ke_dhs$EDUCLVL >= 2 ~ "Secondary+",
+  ke_dhs$EDUCLVL == 1 ~ "Primary",
+  TRUE ~ "None"
+)
+```
+:::
+
+## Cleaning DHS data {auto-animate="true"}
+
+:::{.nonincremental}
+-   `case_when()` can be useful here
+
+-   You can specify multiple *conditions* and *replacement values*:
+:::
+
+```{r}
+#| out.lines: 5
+case_when(
+  ke_dhs$EDUCLVL == 8 ~ NA, 
+  ke_dhs$EDUCLVL >= 2 ~ "Secondary+",
+  ke_dhs$EDUCLVL == 1 ~ "Primary",
+  TRUE ~ "None"
+)
+```
+
+## Cleaning DHS data
+
+-   Fortunately, when we use dplyr, we don't have to indicate the name of the
+    dataset each time:
+
+:::{.fragment .fade-in}
+```{r}
+ke_dhs <- ke_dhs |>
   mutate(
-    HEIGHTFEM = if_else(HEIGHTFEM >= 9994, NA, HEIGHTFEM / 10),
-    EDUCLVL = if_else(EDUCLVL == 8, NA, EDUCLVL),
-    BIRTHWTREF = if_else(BIRTHWTREF >= 7, NA, BIRTHWTREF)
+    EDUCLVL = case_when(
+      EDUCLVL == 8 ~ NA,
+      EDUCLVL >= 2 ~ "Secondary+",
+      EDUCLVL == 1 ~ "Primary",
+      TRUE ~ "None"
+    )
+  )
+```
+:::
+
+## Cleaning DHS data
+
+-   Now we just have to do a similar process for the rest of our input
+    variables!
+    
+-   We will save this as an exercise
+
+:::{.fragment .fade-in}
+```{r}
+#| echo: false
+#| results: false
+ke_dhs |> 
+  mutate(
+    FLOOR = case_when(
+      FLOOR >= 996 ~ NA,
+      FLOOR >= 300 ~ "Finished",
+      TRUE ~ "Unfinished"
+    ),
+    TOILETTYPE = case_when(
+      TOILETTYPE == 0 ~ "No facility",
+      TOILETTYPE >= 9996 ~ NA,
+      TOILETTYPE >= 2000 ~ "Non-flush",
+      TRUE ~ "Flush"
+    ),
+    DRINKWTR = case_when(
+      DRINKWTR >= 9996 ~ NA,
+      DRINKWTR >= 4000 ~ "Other",
+      DRINKWTR >= 3000 ~ "Surface",
+      DRINKWTR >= 2000 ~ "Well",
+      TRUE ~ "Piped"
+    ),
+    FEVRECENT = case_when(
+      FEVRECENT >= 97 ~ NA,
+      FEVRECENT >= 20 ~ "Yes",
+      TRUE ~ "No"
+    ),
+    DIARRECENT = case_when(
+      DIARRECENT >= 97 ~ NA,
+      DIARRECENT >= 20 ~ "Yes",
+      TRUE ~ "No"
+    )
   )
 ```
 :::
 
 ## Defining our sample
 
--   We can use `mutate()` to create new columns
+-   We can also use `mutate()` to create *new* columns
 -   In this case, to make an ID for each child in our sample:
 
 ::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 5
 # str_squish() removes excess whitespace in the ID strings
-ke_dhs <- ke_dhs |> 
+ke_dhs <- ke_dhs |>
   mutate(KIDID = stringr::str_squish(paste(IDHSPID, BIDX)))
 
 ke_dhs$KIDID
@@ -497,10 +644,10 @@ height="150"}
 ## Defining our sample
 
 -   This last point is particularly important when considering climate
-    exposure
+exposure
 
-    -   People who do not consistently live in an area will not have
-        been exposed to the climate data for that area!
+-   People who do not consistently live in an area will not have
+been exposed to the climate data for that area!
 
 -   Many DHS surveys include an indication of residency status
 
@@ -510,17 +657,17 @@ height="150"}
 ## Defining our sample
 
 -   Unfortunately, Kenya 2014 sample only includes a more general
-    variable: `RESIDENT`
+variable: `RESIDENT`
 
 -   We will remove all records that aren't residents of the cluster
-    where they were surveyed
+where they were surveyed
 
 -   We can use `filter()` from dplyr to keep only records for "usual
-    residents"
+residents"
 
 ::: {.fragment .fade-in}
 ```{r}
-ke_dhs <- ke_dhs |> 
+ke_dhs <- ke_dhs |>
   filter(RESIDENT == 1)
 ```
 :::
@@ -533,17 +680,17 @@ ke_dhs <- ke_dhs |>
 
 ::: {.fragment .fade-in}
 ```{r}
-ke_dhs <- ke_dhs |> 
+ke_dhs <- ke_dhs |>
   filter(!is.na(BIRTHWT))
 ```
 :::
 
-## Defining our sample
+## Visualizing our sample
 
 ::: nonincremental
 ::: {.fragment .fade-in fragment-index="1"}
 -   It can also be useful to visualize variables to identify unreliable
-    data
+data
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -563,11 +710,11 @@ height="150"}
 :::
 :::
 
-## Defining our sample
+## Visualizing our sample
 
 -   Make a ggplot based on your data with `ggplot()`
 
--   Add different visual layers with `+`
+-   Add different visual layers (`geom_`) with `+`
 
 -   For instance, here is a histogram of our `BIRTHWT` values:
 
@@ -579,7 +726,7 @@ ggplot(ke_dhs) +
 ```
 :::
 
-## Defining our sample
+## Visualizing our sample
 
 -   It looks like lots of `BIRTHWT`values cluster at certain points
 
@@ -591,7 +738,7 @@ ggplot(ke_dhs) +
 
 -   We often need to recode variables to the correct data types
 -   Sometimes categorical variables are treated as numeric variables,
-    but we want them to be *factors*
+but we want them to be *factors*
 -   A factor is the way R stores categorical data
 
 ::: {.fragment .fade-in}
@@ -622,7 +769,7 @@ Cleaning tabular data 🧼
 ::: {.column width="60%"}
 ::: {.fragment .fade-in-then-semi-out fragment-index="1"}
 -   Location information is collected for the household groups
-    ("clusters") that were sampled in a survey
+("clusters") that were sampled in a survey
 :::
 
 ::: {.fragment .fade-in-then-semi-out fragment-index="2"}
@@ -649,13 +796,13 @@ Cleaning tabular data 🧼
 ## Access to GPS data
 
 -   Typically you must [request special
-    access](https://www.dhsprogram.com/Methodology/GPS-Data.cfm) via the
-    DHS program to obtain GPS coordinate data
+access](https://www.dhsprogram.com/Methodology/GPS-Data.cfm) via the
+DHS program to obtain GPS coordinate data
 
 -   ***For this workshop, we have generated fake GPS coordinate data!***
 
 -   These data look like what you would get from the DHS Program, but
-    the coordinates have been randomly generated.
+the coordinates have been randomly generated.
 
 ## Disclaimer
 
@@ -664,14 +811,23 @@ for demonstration only!*
 
 ## Loading GPS data in R
 
+:::{.nonincremental}
+:::{.fragment .fade-in fragment-index="1"}
 -   We will use the [sf](https://r-spatial.github.io/sf/) package (for
-    ***s**imple **f**eatures*)
-
+***s**imple **f**eatures*)
+:::
+:::{.fragment .fade-in fragment-index="2"}
 -   This allows us to represent spatial data in a familiar tabular
-    format
-
+format
+:::
+:::{.fragment .fade-in fragment-index="3"}
 -   If you are familiar with GIS software, you will find that you can do
-    many of the same operations using sf and R
+many of the same operations using sf and R
+:::
+:::
+:::{.fragment .fade-in fragment-index="1"}
+![](images/hex/sf.png){.absolute right="10" bottom="50" height="150"}
+:::
 
 ## Loading GPS data in R {auto-animate="true"}
 
@@ -701,7 +857,7 @@ ke_gps
 ## Simple features
 
 -   Note that sf is used only for **vector** data. That is, data
-    composed of discrete features, like points, lines, and polygons
+composed of discrete features, like points, lines, and polygons
 
 ::: {.fragment .fade-in}
 ![](images/plp1.png){fig-align="center"}
@@ -732,7 +888,7 @@ county, etc.
 ## Mapping
 
 -   We will use the ggspatial package to produce static maps for this
-    workshop
+workshop
 
 -   ggspatial is designed to be used with the popular ggplot2 package
 
@@ -747,7 +903,7 @@ ggplot() +
 ```
 :::
 
-## Mapping {auto-animate="true" visibility="uncounted"}
+## Mapping {auto-animate="true"}
 
 ```{r}
 ggplot() +
@@ -759,14 +915,14 @@ ggplot() +
 
 -   We'll obtain some borders to add some context.
 
--   These are integrated boundaries, which can be obtained from [IPUMS
-    DHS](https://www.idhsdata.org/idhs/gis.shtml) (TODO: probably should
-    use year-specific!)
+-   These are from the 2014 DHS survey
 
 ::: {.fragment .fade-in}
 ```{r}
-ke_borders <- st_read("data/geo_ke1989_2014/geo_ke1989_2014_cleaned.shp") |> 
-  filter(DHSCODE != 88) # Remove waterbodies
+ke_borders <- st_read(
+  "data/ke_boundaries/sdr_subnational_boundaries2.shp", 
+  quiet = TRUE
+)
 ```
 :::
 
@@ -775,21 +931,74 @@ ke_borders <- st_read("data/geo_ke1989_2014/geo_ke1989_2014_cleaned.shp") |>
 ```{r}
 #| eval: false
 theme_set(theme_minimal())
-
-ggplot() +
-  layer_spatial(ke_borders) +
-  layer_spatial(ke_gps)
 ```
 
-## Mapping {auto-animate="true" visibility="uncounted"}
+## Mapping {auto-animate="true"}
 
 ```{r}
+#| eval: false
 #| code-line-numbers: "|4"
 theme_set(theme_minimal())
 
 ggplot() +
   layer_spatial(ke_borders) +
   layer_spatial(ke_gps)
+```
+
+## Mapping {auto-animate="true"}
+
+```{r}
+theme_set(theme_minimal())
+
+ggplot() +
+  layer_spatial(ke_borders) +
+  layer_spatial(ke_gps)
+```
+## Modifying map style {auto-animate="true"}
+
+-   We can modify the aesthetics of the map as well as the content
+
+:::{.fragment .fade-in}
+```{r}
+#| eval: false
+#| code-line-numbers: "|4-6|10-11|13"
+ggplot() +
+  layer_spatial(
+    ke_borders,
+    fill = "#F6E6CB",  # Polygon fill color
+    color = "#7f7f7f", # Polygon outline color
+    linewidth = 0.5    # Polygon line width
+  ) +
+  layer_spatial(
+    ke_gps,
+    alpha = 0.2,       # Cluster point transparency
+    color = "#444444"  # Cluster point color
+  ) +
+  labs(title = "DHS Cluster Locations", subtitle = "Kenya 2014 Sample")
+```
+:::
+
+## Modifying map style {auto-animate="true"}
+
+:::{.nonincremental}
+-   We can modify the aesthetics of the map as well as the content
+:::
+
+```{r}
+#| echo: false
+ggplot() +
+  layer_spatial(
+    ke_borders,
+    fill = "#F6E6CB",  # Polygon fill color
+    color = "#7f7f7f", # Polygon outline color
+    linewidth = 0.5    # Polygon line width
+  ) +
+  layer_spatial(
+    ke_gps,
+    alpha = 0.2,       # Cluster point transparency
+    color = "#444444"  # Cluster point color
+  ) +
+  labs(title = "DHS Cluster Locations", subtitle = "Kenya 2014 Sample")
 ```
 
 # R Demo
@@ -819,7 +1028,7 @@ map where you color them something different than the other counties?
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   CHIRTS is provided by the [Climate Hazards
-    Center](https://chc.ucsb.edu/) (CHC)
+Center](https://chc.ucsb.edu/) (CHC)
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -830,23 +1039,23 @@ map where you color them something different than the other counties?
 ## What is CHIRTS?
 
 -   CHIRTS provides daily estimates for several temperature metrics at a
-    0.05° (\~5 kilometer) resolution
+0.05° (\~5 kilometer) resolution
 
 -   Data for 1983-2016
 
 -   Multiple temperature metrics to choose from (max, min, relative
-    humidity, etc.)
+humidity, etc.)
 
 -   For this demonstration, we will use **daily maximum air
-    temperature** (Tmax)
+temperature** (Tmax)
 
 ## What is CHIRTS?
 
 -   Like many climate data sources, CHIRTS is a **raster** data source
 
 -   Compared to vector data, raster data represent geographic features
-    in a grid, where each cell in the grid is associated with a
-    particular value.
+in a grid, where each cell in the grid is associated with a
+particular value.
 
 ::: {.fragment .fade-in}
 ![](images/plp2.png){fig-align="center"}
@@ -855,7 +1064,7 @@ map where you color them something different than the other counties?
 ## Obtaining CHIRTS data
 
 -   **Option 1:** [Direct
-    download](http://data.chc.ucsb.edu/products/CHIRTSdaily/v1.0/africa_netcdf_p05/)
+download](http://data.chc.ucsb.edu/products/CHIRTSdaily/v1.0/africa_netcdf_p05/)
 
 -   Can download yearly data for Africa at different resolutions
 
@@ -866,10 +1075,10 @@ map where you color them something different than the other counties?
 ## Obtaining CHIRTS data
 
 -   **Option 2:** The
-    [`chirps`](https://docs.ropensci.org/chirps/index.html) package in R
+[`chirps`](https://docs.ropensci.org/chirps/index.html) package in R
 
 -   Can provide parameters indicating the desired data right in your R
-    console!
+console!
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -885,15 +1094,15 @@ ke_chirts <- chirps::get_chirts(
 ## Obtaining CHIRTS data
 
 -   We have already prepared and saved some CHIRTS data, since it can
-    take time/space to download and store raster data
+take time/space to download and store raster data
 
 -   File `ke_chirts_2013.nc` in the `data` directory of the workshop
-    materials
+materials
 
 ## Raster data
 
 -   Think "image" files. Like a camera: a rectangular set of pixels at a
-    certain resolution
+certain resolution
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -909,17 +1118,28 @@ plot(ke_chirts[[1]])
 
 ## Raster data in R
 
+:::{.nonincremental}
+:::{.fragment .fade-in fragment-index="1"}
 -   sf does not handle raster data
-
+:::
+:::{.fragment .fade-in fragment-index="2"}
 -   Instead, we will use
-    [terra](https://rspatial.github.io/terra/index.html)
-
+[terra](https://rspatial.github.io/terra/index.html)
+:::
+:::{.fragment .fade-in fragment-index="3"}
 -   Unlike vector data, raster data is not easily handled in a tabular
-    format
-
+format
+:::
+:::{.fragment .fade-in fragment-index="4"}
 -   terra uses its own set of R data structures to represent raster data
+:::
+:::
 
-## Raster data in R {auto-animate="\"true"}
+:::{.fragment .fade-in fragment-index="2"}
+![](images/hex/terra.png){.absolute right="10" bottom="50" height="150"}
+:::
+
+## Raster data in R {auto-animate="true"}
 
 -   How does terra represent rasters?
 
@@ -932,7 +1152,7 @@ ke_chirts <- rast("data/ke_chirts_2013.nc") # Our pre-saved CHIRTS NetCDF
 ```
 :::
 
-## Raster data in R {auto-animate="\"true"}
+## Raster data in R {auto-animate="true"}
 
 ::: nonincremental
 -   How does terra represent rasters?
@@ -965,17 +1185,23 @@ ke_chirts
 
 ## Raster data in R {auto-animate="true"}
 
+-   Access specific layers with `[[`
+
+:::{.fragment .fade-in}
 ```{r}
 #| eval: false
-# Access specific layers with `[[`
 ke_chirts[[1]]
 ```
+:::
 
 ## Raster data in R {auto-animate="true"}
 
+:::{.nonincremental}
+-   Access specific layers with `[[`
+:::
+
 ```{r}
-#| code-line-numbers: "|4,9-10"
-# Access specific layers with `[[`
+#| code-line-numbers: "|3,8-9"
 ke_chirts[[1]]
 ```
 
@@ -1053,20 +1279,25 @@ time(ke_chirts)
 
 -   `time()` will be useful later!
 
-## Mapping with raster data {transition="fade"}
+## Mapping with raster data {auto-animate="true"}
 
 -   ggspatial works with raster data as well!
 
-```{r}
-#| echo: false
-scale_chirts_c <- function(...) {
-  colorRampPalette(c("#bad3e8", "#ffd3a3", "#da5831", "#872e38"), ...)
-}
-
-pal <- scale_chirts_c()
-```
-
 ::: {.fragment .fade-in}
+```{r}
+#| eval: false
+# Reclassify missing values
+m <- matrix(c(-9999, NA), nrow = 1)
+ke_chirts <- classify(ke_chirts, m)
+```
+:::
+
+## Mapping with raster data {auto-animate="true"}
+
+::: nonincremental
+-   ggspatial works with raster data as well!
+:::
+
 ```{r}
 #| eval: false
 #| code-line-numbers: "|6|7"
@@ -1076,13 +1307,10 @@ ke_chirts <- classify(ke_chirts, m)
 
 ggplot() +
   layer_spatial(ke_chirts[[1]], alpha = 0.9) +
-  layer_spatial(ke_borders, fill = NA, color = "black") +
-  # colorspace::scale_fill_continuous_sequential("Heat") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
+  layer_spatial(ke_borders, fill = NA, color = "black")
 ```
-:::
 
-## Mapping with raster data {transition="fade"}
+## Mapping with raster data {auto-animate="true"}
 
 ::: nonincremental
 -   ggspatial works with raster data as well!
@@ -1090,15 +1318,14 @@ ggplot() +
 
 ```{r}
 #| echo: false
+#| fig-align: center
 # Reclassify missing values
 m <- matrix(c(-9999, NA), nrow = 1)
 ke_chirts <- classify(ke_chirts, m)
 
 ggplot() +
   layer_spatial(ke_chirts[[1]], alpha = 0.9) +
-  layer_spatial(ke_borders, fill = NA, color = "black") +
-  # colorspace::scale_fill_continuous_sequential("Heat") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5)
 ```
 
 # R Demo
@@ -1119,7 +1346,7 @@ values (`app()`. `tapp()` will be later) - Plotting
 ## Thinking spatially
 
 -   Spatial data sounds flashy, but we typically have to simplify it
-    before it can be useful
+before it can be useful
 
 -   We have detailed daily maximum temperature for an entire country
 
@@ -1163,12 +1390,12 @@ challenges would be to measure each of them, etc.
 -   Climate effects rarely happen only at a single point!
 
 -   The climate of the *general area* around a cluster might provide a
-    better representation of how it impacts the population in an area
+better representation of how it impacts the population in an area
 
 ## Buffering
 
 -   We can capture this by creating a *spatial buffer*, or a area around
-    each cluster point
+each cluster point
 
 -   However, we first need to deal with another technical detail
 
@@ -1178,7 +1405,7 @@ challenges would be to measure each of them, etc.
 
 ::: {.fragment .fade-in}
 ```{r}
-#| code-line-numbers: "|6,9-11"
+#| code-line-numbers: "|5-6,9-11"
 #| out.lines: 10
 ke_gps[, "geometry"]
 ```
@@ -1189,12 +1416,12 @@ ke_gps[, "geometry"]
 ::: nonincremental
 ::: {.fragment .fade-in fragment-index="1"}
 -   Number of meters in a degree *varies* across the globe
-    -   (Especially for longitude!)
+    -   Especially for longitude
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   This means our buffer zone size would vary by the location of each
-    cluster!
+cluster!
 :::
 
 ::: {.fragment .fade-in fragment-index="1"}
@@ -1205,13 +1432,16 @@ ke_gps[, "geometry"]
 ## Projecting
 
 -   We need to first transform our coordinate system so that our units
-    are in meters
+are in meters
 
--   We need to *project* our spherical coordiantes onto a flat surface
+-   We need to *project* our spherical coordinates onto a flat surface
 
 ::: {.fragment .fade-in}
-![[Source](https://gistbok.ucgis.org/bok-topics/2017-quarter-03/map-projections)](images/map_proj.png){fig-align="center"
-height="400"}
+![](images/map_proj.png){fig-align="center" height="400"}
+:::
+
+:::{.notes}
+Source: https://gistbok.ucgis.org/bok-topics/2017-quarter-03/map-projections
 :::
 
 ## Selecting a Projection
@@ -1223,11 +1453,11 @@ height="400"}
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   However, different projections preserve different attributes of
-    space
-    -   Distance
-    -   Area
-    -   Shapes
-    -   A compromise
+space
+-   Distance
+-   Area
+-   Shapes
+-   A compromise
 :::
 :::
 
@@ -1239,7 +1469,7 @@ height="400"}
 ## Selecting a Projection
 
 -   There are also projection options designed to minimize distortion in
-    specific areas
+specific areas
 -   One option: Universal Transverse Mercator (UTM)
 -   UTM has different zones for different areas on the globe
 
@@ -1252,7 +1482,7 @@ height="300"}
 
 -   Zone 37 provides the best projection (least distortion) for Kenya
 -   Kenya is split along the border between 37N and 37S
-    -   For simplicity we will use 37N
+-   For simplicity we will use 37N
 -   UTM 37N corresponds to **EPSG 32637**
 
 ## Projection in R {auto-animate="true"}
@@ -1286,6 +1516,7 @@ ke_gps[, "geometry"]
 
 ::: {.fragment .fade-in}
 ```{r}
+#| fig-align: center
 ggplot() +
   layer_spatial(ke_gps)
 ```
@@ -1296,7 +1527,7 @@ ggplot() +
 ::: nonincremental
 -   The map looks pretty much the same!
 -   If we were to use a less appropriate projection, the difference
-    would be more obvious (see exercises)
+would be more obvious (see exercises)
 :::
 
 ## Creating Buffers {auto-animate="true"}
@@ -1304,7 +1535,7 @@ ggplot() +
 -   Now that our data are in meters, we can buffer
 -   We will use a 10km buffer in this case
 -   In the real world, this decision should be based on your research
-    question or the geography of interest!
+question or the geography of interest!
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1319,7 +1550,7 @@ ke_buffer <- st_buffer(ke_gps, dist = 10000)
 -   Now that our data are in meters, we can buffer
 -   We will use a 10km buffer in this case
 -   In the real world, this decision should be based on your research
-    question or the geography of interest!
+question or the geography of interest!
 :::
 
 ```{r}
@@ -1334,6 +1565,7 @@ ke_buffer[, "geometry"]
 
 ::: {.fragment .fade-in}
 ```{r}
+#| fig-align: center
 ggplot() +
   layer_spatial(ke_buffer, alpha = 0)
 ```
@@ -1344,7 +1576,7 @@ ggplot() +
 ::: nonincremental
 ::: {.fragment .fade-in}
 -   We can return back to our latitude/longitude coordinates now that we
-    have constructed our buffer zones
+have constructed our buffer zones
 
 ```{r}
 ke_buffer <- st_transform(ke_buffer, crs = 4326) # WGS 84 CRS
@@ -1369,16 +1601,16 @@ changes the projection visually
 
 -   Our CHIRTS data form a *daily time series*
 -   But the children in our DHS survey were born at specific points in
-    time
+time
 -   We need to include temperature data from the *relevant time period*
-    for each child
+for each child
 
 ## Temporal aggregation
 
 ::: nonincremental
 ::: {.fragment .fade-in}
 -   How to simplify our CHIRTS data into temperature exposure summaries
-    for each child?
+for each child?
 :::
 
 ::: {.fragment .fade-in}
@@ -1402,7 +1634,7 @@ Considerations:
 
 -   Use terra!
 -   If aggregating the entire time series, use a single summary
-    function:
+function:
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1416,7 +1648,7 @@ ke_chirts_mean <- mean(ke_chirts)
 ::: nonincremental
 -   Use terra!
 -   If aggregating the entire time series, use a single summary
-    function:
+function:
 :::
 
 ```{r}
@@ -1429,37 +1661,44 @@ ke_chirts_mean
 ## Temporal aggregation in R
 
 -   Note that this aggregates **cells** across **layers** (time), so we
-    will still have data for our full *spatial* region
+will still have data for our full *spatial* region
 
-::: {.fragment .fade-in}
-```{r}
-#| eval: false
-ggplot() +
-  layer_spatial(ke_chirts_mean) +
-  layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
-```
-:::
-
-## Temporal aggregation in R
-
-:::{.nonincremental}
--   Note that this aggregates **cells** across **layers** (time), so we
-    will still have data for our full *spatial* region
-:::
-
+:::{.fragment .fade-in}
 ```{r}
 #| echo: false
+#| fig-align: center
+theme_set(theme_dhs_base())
+
 ggplot() +
-  layer_spatial(ke_chirts_mean) +
-  layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
+  layer_spatial(
+    mask(ke_chirts_mean, ke_borders), 
+    alpha = 0.9
+  ) +
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) +
+  labs(title = "Mean Temperature (°C)", subtitle = "Kenya, 2014", fill = "") +
+  scale_fill_chirts_c()
 ```
+:::
+
+<!-- ## Temporal aggregation in R -->
+
+<!-- :::{.nonincremental} -->
+<!-- -   Note that this aggregates **cells** across **layers** (time), so we -->
+<!--     will still have data for our full *spatial* region -->
+<!-- ::: -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- ggplot() + -->
+<!--   layer_spatial(ke_chirts_mean) + -->
+<!--   layer_spatial(ke_borders, fill = NA, color = "#444444") + -->
+<!--   scale_fill_gradientn(colors = pal(256), na.value = NA) -->
+<!-- ``` -->
 
 ## Temporal aggregation in R
 
 -   What about another way to aggregate? Days above a threshold
-    temperature?
+temperature?
 -   We can do simple operations to all of our raster cells at once:
 
 ::: {.fragment .fade-in}
@@ -1471,24 +1710,24 @@ ke_bin <- ke_chirts > 35
 
 ## Temporal aggregation in R
 
-```{r}
-#| eval: false
-# Get a binary indicator of whether each cell is above
-ggplot() +
-  layer_spatial(ke_bin[[1]], alpha = 0.8) +
-  layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_manual(values = c("#bad3e8", "#872e38"), na.value = NA)
-```
-
-## Temporal aggregation in R
+:::{.nonincremental}
+-   What about another way to aggregate? Days above a threshold
+temperature?
+-   We can do simple operations to all of our raster cells at once:
+:::
 
 ```{r}
 #| echo: false
+#| fig-align: center
 # Get a binary indicator of whether each cell is above
 ggplot() +
-  layer_spatial(ke_bin[[1]], alpha = 0.8) +
-  layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_manual(values = c("#bad3e8", "#872e38"), na.value = NA)
+  layer_spatial(
+    mask(ke_bin[[1]], ke_borders), 
+    alpha = 0.9
+  ) +
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) +
+  labs(title = "Areas above 35°C", subtitle = "January 1, 2014", fill = "") +
+  scale_fill_manual(values = c("#d6d6d6", "#872e38"), na.translate = FALSE)
 ```
 
 ## Temporal aggregation in R
@@ -1497,13 +1736,7 @@ ggplot() +
 
 :::{.fragment .fade-in}
 ```{r}
-#| eval: false
 ke_count_above_35 <- sum(ke_bin)
-
-ggplot() +
-  layer_spatial(mask(ke_count_above_35, ke_borders), alpha = 0.9) +
-  layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
 ```
 :::
 
@@ -1515,39 +1748,39 @@ ggplot() +
 
 ```{r}
 #| echo: false
-ke_count_above_35 <- sum(ke_bin)
-
+#| fig-align: center
 ggplot() +
   layer_spatial(mask(ke_count_above_35, ke_borders), alpha = 0.9) +
   layer_spatial(ke_borders, fill = NA, color = "#444444") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
+  labs(title = "Number of days above 35°C", subtitle = "Kenya, 2014", fill = "") +
+  scale_fill_chirts_c()
 ```
 
-## Temporal aggregation in R
+<!-- ## Temporal aggregation in R -->
 
-...would be nice to demo a relative approach (e.g. Z-score) but hard
-without longer sequence of data...
+<!-- ...would be nice to demo a relative approach (e.g. Z-score) but hard -->
+<!-- without longer sequence of data... -->
 
 ## What level do we want to aggregate to?
 
 -   So far we have summarized the *entire* time series of CHIRTS data
-    into one value
+into one value
 -   But the children in our DHS survey were born at specific points in
-    time
+time
 -   A single summary value likely affects children differently based on
-    when they were born
+when they were born
 
 ## What level do we want to aggregate to?
 
 -   Instead we can aggregate to a lower level
 -   DHS collects birth date data at the monthly level, so this is the
-    finest resolution we can use
+finest resolution we can use
 
 ## What level do we want to aggregate to?
 
 -   Recall that our raster has a `time` component
 -   We can use it to aggregate our raster data to the monthly level as
-    well
+well
 -   We will use terra's `tapp()` to do so
 
 ::: {.fragment .fade-in}
@@ -1561,13 +1794,60 @@ ke_count_above_35_months <- tapp(
 ```
 :::
 
-## What level do we want to aggregate to?
-
-TODO: make this a nicer plot -- do panel stuff
+---
 
 ```{r}
-plot(ke_count_above_35_months)
+#| echo: false
+#| cache: true
+months <- c("January", "February", "March", "April", 
+            "May", "June", "July", "August",
+            "September", "October", "November", "December")
+
+panels <- purrr::map2(
+  split_raster(ke_count_above_35_months),
+  months,
+  function(r, m) {
+    chirts_panel_continuous(
+      r, 
+      borders = ke_borders,
+      panel_title = m,
+      show_scale = FALSE,
+      fill_lab = ""
+    )
+  }
+)
 ```
+
+```{r}
+#| echo: false
+#| cache: true
+#| fig-align: center
+patchwork::wrap_plots(panels) +
+  patchwork::plot_layout(guides = "collect", ncol = 6) +
+  patchwork::plot_annotation(
+    title = "Proportion of Days above 35°C",
+    subtitle = "Kenya, 2014",
+    caption = "Source: Climate Hazards Center"
+  )
+```
+
+## Selecting a metric
+
+-   There are many other ways to quantify heat exposure
+
+-   For simplicity of interpretation in our models (later), we'll return to the
+    *average temperature* metric
+    
+:::{.fragment .fade-in}
+```{r}
+# Average daily CHIRTS within months
+ke_chirts_mean_mnths <- tapp(
+  ke_chirts, # No longer the binary raster!
+  fun = mean,
+  index = "yearmonths"
+)
+```
+:::
 
 ## Spatial aggregation
 
@@ -1577,13 +1857,15 @@ plot(ke_count_above_35_months)
 :::{.fragment .fade-in}
 ```{r}
 #| echo: false
-ke_count_to_plot <- mask(ke_count_above_35_months[[1]], ke_borders)
+#| fig-align: center
+ke_count_to_plot <- mask(ke_chirts_mean_mnths[[1]], ke_borders)
 
 ggplot() +
   layer_spatial(ke_count_to_plot, alpha = 0.9) +
   layer_spatial(ke_borders, fill = NA, color = "#444444") +
   layer_spatial(ke_buffer, fill = NA, color = alpha("black", 0.5)) +
-  scale_fill_gradientn(colors = pal(256), na.value = NA)
+  labs(title = "Mean Temperature (°C)", subtitle = "January, 2014", fill = "") +
+  scale_fill_chirts_c()
 ```
 :::
 
@@ -1598,10 +1880,12 @@ clust1 <- ke_buffer |>
 :::{.fragment .fade-in}
 ```{r}
 #| echo: false
+#| fig-align: center
 ggplot() +
-  layer_spatial(crop(ke_count_above_35_months[[1]], clust1, snap = "out")) +
+  layer_spatial(crop(ke_chirts_mean_mnths[[1]], clust1, snap = "out")) +
   layer_spatial(clust1, fill = NA, color = "black") +
-  scale_fill_gradientn(colors = pal(256), na.value = NA, limits = c(0, 1))
+  labs(title = "Mean Temperature (°C)", subtitle = "Single Cluster", fill = "") +
+  scale_fill_chirts_c()
 ```
 :::
 
@@ -1615,22 +1899,22 @@ ggplot() +
 
 ::: {.fragment .fade-in}
 ```{r}
-extract(ke_count_above_35_months[[1]], clust1)
+extract(ke_chirts_mean_mnths[[1]], clust1)
 ```
 :::
 
 ## Spatial aggregation
 
 -   Note that this includes only the 10 cells whose center lies within
-    our cluster polygon.
+our cluster polygon.
 -   Use `weights = TRUE` to get the weights for each cell based on
-    intersection area:
+intersection area:
 
 ::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 10
 extract(
-  ke_count_above_35_months[[1]],
+  ke_chirts_mean_mnths[[1]],
   clust1,
   weights = TRUE
 )
@@ -1645,7 +1929,7 @@ extract(
 ::: {.fragment .fade-in}
 ```{r}
 extract(
-  ke_count_above_35_months[[1]],
+  ke_chirts_mean_mnths[[1]],
   clust1,
   weights = TRUE,
   fun = mean
@@ -1656,14 +1940,14 @@ extract(
 ## Scaling up
 
 -   We can easily apply the same operation to all of our cluster regions
-    at once
+at once
 
 :::{.fragment .fade-in}
 ```{r}
 #| cache: true
 #| code-line-numbers: "|2-3"
 ke_chirts_clust <- extract(
-  ke_count_above_35_months, # Extract values for each month of temperature data
+  ke_chirts_mean_mnths, # Extract values for each month of temperature data
   ke_buffer,                # Use all cluster polygons
   weights = TRUE,
   fun = mean
@@ -1675,7 +1959,7 @@ ke_chirts_clust <- extract(
 
 ::: nonincremental
 -   It will be useful to use the `DHSID` cluster ID instead of the index
-    ID that `extract()` produces.
+ID that `extract()` produces.
 :::
 
 :::{.fragment .fade-in}
@@ -1690,7 +1974,7 @@ ke_chirts_clust$ID <- ke_buffer$DHSID
 
 ::: nonincremental
 -   It will be useful to use the `DHSID` cluster ID instead of the index
-    ID that `extract()` produces.
+ID that `extract()` produces.
 :::
 
 ```{r}
@@ -1722,16 +2006,16 @@ approximations of real-world impact pathways
 
 # 7. Linking climate exposure to survey data
 
-## 7.1 Reconciling data source formatting
+# 7.1 Reconciling data source formatting
 
 ## Wide vs. long format
 
 -   `extract()` produces data in **wide** format
 
-    -   Each *column* corresponds to a month of temperature data for a
-        given cluster
+-   Each *column* corresponds to a month of temperature data for a
+given cluster
 
-    -   This is a common format in GIS software
+-   This is a common format in GIS software
 
 :::{.fragment .fade-in}
 ```{r}
@@ -1744,13 +2028,13 @@ ke_chirts_clust
 
 -   However, tabular data is often handled in **long** format
 
-    -   Each *row* corresponds to a month of temperature data for a
-        given cluster
+-   Each *row* corresponds to a month of temperature data for a
+given cluster
 
 ## Wide vs. long format {auto-animate="true"}
 
 -   We can convert our cluster data to long format with `pivot_longer()`
-    
+
 :::{.fragment .fade-in}
 ```{r}
 #| out.lines: 5
@@ -1758,7 +2042,7 @@ ke_chirts_long <- ke_chirts_clust |>
   pivot_longer(
     cols = -ID, # Do not pivot the ID col
     names_to = "CHIRTS_DATE", # Rename output columns
-    values_to = "PROP_HOT_DAYS"
+    values_to = "MEAN_TEMP"
   )
 ```
 :::
@@ -1767,15 +2051,15 @@ ke_chirts_long <- ke_chirts_clust |>
 
 :::{.nonincremental}
 -   We had 1594 clusters and 12 months of data per cluster, so we should
-    end up with `1594 * 12 = 19128` rows
-    
+end up with `1594 * 12 = 19128` rows
+
 ```{r}
 #| out.lines: 10
 ke_chirts_long <- ke_chirts_clust |>
   pivot_longer(
     cols = -ID, # Do not pivot the ID col
     names_to = "CHIRTS_DATE", # Rename output columns
-    values_to = "PROP_HOT_DAYS"
+    values_to = "MEAN_TEMP"
   )
 
 ke_chirts_long
@@ -1786,7 +2070,7 @@ ke_chirts_long
 
 -   DHS uses **century-month codes** (CMCs) to represent dates
 -   CMC codes represent dates as the number of months that have elapsed
-    since year 1900
+since year 1900
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1809,20 +2093,29 @@ ke_chirts_long$CHIRTS_DATE
 ## Converting Dates
 
 -   We'll need to convert these to a single format before we can use the
-    two data sources together
+two data sources together
 -   Fortunately, the IPUMS DHS variable info describes how to convert
-    between CMC codes
+between CMC codes
 
 :::{.fragment .fade-in}
 ```{r}
+#| eval: false
 ipums_var_desc(ke_ddi, "KIDDOBCMC")
+#> ...
+#> Starting with CMC figures, one can calculate the month and year using the 
+#> following formulas: 
+#> 
+#> Year = int( ( CMC minus 1 )/12 ) + 1900 [int(x) is the integer part of x] 
+#> 
+#> Month = CMC minus ( ( Year minus 1900 ) * 12 )
+#> ...
 ```
 :::
 
 ## Converting Dates {auto-animate="true"}
 
 -   We can use the indicated formula to convert our CHIRTS dates into
-    CMC format
+CMC format
 -   First, we need to convert the string format to year and month
 -   We will remove the `"ym_"` prefix first:
 
@@ -1831,7 +2124,7 @@ ipums_var_desc(ke_ddi, "KIDDOBCMC")
 #| eval: false
 library(stringr)
 
-# Get month names as used in extracted CHIRTS data
+# Replace "ym_" with ""
 ke_chirts_long <- ke_chirts_long |>
   mutate(CHIRTS_DATE = str_replace(CHIRTS_DATE, "ym_", ""))
 ```
@@ -1841,7 +2134,7 @@ ke_chirts_long <- ke_chirts_long |>
 
 :::{.nonincremental}
 -   We can use the indicated formula to convert our CHIRTS dates into
-    CMC format
+CMC format
 -   First, we need to convert the string format to year and month
 -   We will remove the `"ym_"` prefix first:
 :::
@@ -1892,7 +2185,7 @@ ke_chirts_long
 ## Converting Dates
 
 -   Finally, we can convert these dates into CMC codes using the formula
-    from before
+from before
 
     -   `(year - 1900) * 12 + month`
 
@@ -1909,10 +2202,9 @@ ke_chirts_long
 ## Workflow note
 
 ::: nonincremental
--   Worth noting that we can combine all the above steps into a single R
-    expression.
--   I'm walking through step by step for clarity, but in a real analysis
-    script, the following might be easier to write/interpret
+-   We can combine all the above steps into a single R expression
+-   I'm walking through step by step for clarity
+-   In a real analysis script, the following might be easier to write/interpret
 :::
 
 ```{r}
@@ -1921,7 +2213,7 @@ ke_chirts_long <- ke_chirts_clust |>
   pivot_longer(
     cols = -ID,
     names_to = "CHIRTS_DATE",
-    values_to = "PROP_HOT_DAYS"
+    values_to = "MEAN_TEMP"
   ) |>
   mutate(
     CHIRTS_DATE = str_replace(CHIRTS_DATE, "ym_", ""),
@@ -1930,29 +2222,32 @@ ke_chirts_long <- ke_chirts_clust |>
   )
 ```
 
-## 7.2 Joining data sources
+# 7.2 Joining data sources
 
 ## What we have at this point
 
-Our DHS and CHIRTS data now have been reformatted so we can link records
+-   Our DHS and CHIRTS data now have been reformatted so we can link records
 
-Let's peek at what we have:
+-   Let's peek at what we have:
 
+:::{.fragment .fade-in}
 ```{r}
 # Cluster-level monthly CHIRTS data
 ke_chirts_long
 ```
+:::
 
 ## What we have at this point
 
-Our DHS and CHIRTS data now have been reformatted so we can link records
+:::{.nonincremental}
+-   Our DHS and CHIRTS data now have been reformatted so we can link records
 
-Let's peek at what we have:
+-   Let's peek at what we have:
+:::
 
 ```{r}
 # Child-level tabular DHS survey data
-ke_dhs |>
-  select(DHSID, KIDID, BIRTHWT)
+ke_dhs[, c("DHSID", "KIDID", "BIRTHWT")]
 ```
 
 ## Joining climate and DHS data
@@ -1962,14 +2257,14 @@ ke_dhs |>
     -   The type of join (left, right, inner, full)
     -   How records should be matched to each other
 
-## Joining climate and DHS data
+## Joining climate and DHS data {auto-animate="true"}
 
 -   In this case, we only want to retain records that have values in
-    *both* the tabular data *and* the climate data
+*both* the tabular data *and* the climate data
 
--   This corresponds to an "inner" join:
+-   This corresponds to an "inner" join
 
-::: {.fragment .fade-in}
+:::{.fragment .fade-in}
 ```{r}
 #| eval: false
 inner_join(
@@ -1981,48 +2276,77 @@ inner_join(
 
 ## Joining climate and DHS data {auto-animate="true"}
 
--   We want to match records such that:
+:::{.nonincremental}
+-   In this case, we only want to retain records that have values in
+*both* the tabular data *and* the climate data
 
-    -   Each kid is linked to the climate data for their cluster
-    -   Each kid is linked to the climate data for the month of their
-        birth
+-   This corresponds to an "inner" join
+:::
 
 ```{r}
-#| eval: false
+#| error: true
+#| code-line-numbers: "|5,6"
 inner_join(
   ke_dhs,
   ke_chirts_long
 )
 ```
 
+## Joining climate and DHS data
+
+-   We want to match records such that:
+
+    -   Each kid is linked to the climate data for their ***cluster***
+    -   Each kid is linked to the climate data for the ***month of their
+        birth***
+
 ## Joining climate and DHS data {auto-animate="true"}
 
--   To match records based on cluster:
+:::{.nonincremental}
+-   To match records based on ***cluster***:
 
     -   The `DHSID` in the DHS data must match the `ID` in the CHIRTS
         monthly data
 
--   To match records based on month:
+:::{.fragment .fade-in}
+-   To match records based on ***month***:
 
     -   The child date of birth (`KIDDOBCMC`) must match the month of
         CHIRTS data (`CHIRTS_DATE`)
+:::
+:::
 
+:::{.fragment .fade-in}
 ```{r}
+#| code-line-numbers: "|4"
 ke_dhs_chirts <- inner_join(
   ke_dhs,
   ke_chirts_long,
   by = c("DHSID" = "ID", "KIDDOBCMC" = "CHIRTS_DATE")
 )
 ```
+:::
 
-## Joining climate and DHS data {auto-animate="true"}
+## Joining climate and DHS data
 
 ```{r}
-# Each child is now associated with monthly proportion of hot days for their
+# Each child is now associated with monthly average temperature for their
 # birth month
 ke_dhs_chirts |>
-  select(DHSID, KIDID, KIDDOBCMC, PROP_HOT_DAYS)
+  select(DHSID, KIDID, KIDDOBCMC, MEAN_TEMP, BIRTHWT)
 ```
+
+## Exploring our joined dataset
+
+-   Reminder: these are fake data, so we don't expect a relationship!
+
+:::{.fragment .fade-in}
+```{r}
+#| fig-align: center
+ggplot(ke_dhs_chirts) +
+  geom_point(aes(x = MEAN_TEMP, y = BIRTHWT), alpha = 0.5, size = 2)
+```
+:::
 
 # R demo
 

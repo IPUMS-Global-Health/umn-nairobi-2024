@@ -21,3 +21,17 @@ $code-block-bg: #e9ebee;
 .reveal .cell {
   margin-bottom: 20px;
 }
+
+.quarto-title-author-name {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.reveal.smaller .slides h1.title {
+  font-size: 75px;
+}
+
+.reveal .quarto-title-block .quarto-title-authors {
+  flex-direction: column;
+}
