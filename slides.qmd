@@ -69,8 +69,8 @@ source("R/utils.R")
 ::: nonincremental
 ::: {.fragment .fade-in fragment-index="1"}
 -   [The Demographic and Health Surveys
-Program](https://dhsprogram.com/) (DHS) is a leading source of
-population health data in many low- and middle- income countries
+    Program](https://dhsprogram.com/) (DHS) is a leading source of
+    population health data in many low- and middle- income countries
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -91,7 +91,7 @@ population health data in many low- and middle- income countries
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   How do we understand how climate and environmental conditions are
-related to population health?
+    related to population health?
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -106,8 +106,8 @@ related to population health?
 
     -   Not very flexible...
 
--   You can't define environmental exposure in the way most
-appropriate for *your* research
+-   You can't define environmental exposure in the way most appropriate
+    for *your* research
 
 ## Using IPUMS DHS with Climate Data
 
@@ -142,19 +142,19 @@ appropriate for *your* research
 
 ::: nonincremental
 -   Comprehensive instructions can be found in the [workshop
-README](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab=readme-ov-file#july-2024-umn-data-analysis-workshop)
+    README](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab=readme-ov-file#july-2024-umn-data-analysis-workshop)
 
 ::: {.fragment .fade-in}
 -   Setup includes:
 
     -   Registering for DHS / IPUMS DHS
-    
+
     -   Creating an IPUMS DHS data extract
-    
+
     -   Installing R + RStudio
-    
+
     -   Downloading workshop files and launching the workshop R project
-    
+
     -   Installing necessary R packages
 :::
 :::
@@ -171,7 +171,7 @@ materials](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab
 -   Statistical programming language
 -   Open-source and completely free
 -   Commonly used in social sciences, statistics, environmental
-sciences, and more
+    sciences, and more
 
 ![](images/r_logo.png){.absolute top="-20" right="50" height="200"}
 
@@ -180,7 +180,8 @@ sciences, and more
 ::: {columns}
 ::: {.column width="60%"}
 -   You might already use other statistical software (SPSS, SAS, Excel,
-etc.)
+    etc.)
+
 -   Why use R?
 
     -   Reproducibility + automation
@@ -213,8 +214,9 @@ RStudio layout -- editor vs. console, environment, files, etc.
 Assignment Data types Basic arithmetic Comments / whitespace Function
 help documentation Packages Troubleshooting techniques Basic
 functions/functional programming Function syntax Jargon (function,
-argument, variable, assignment, pipe)
-c()! vectors, data.frames, etc.
+argument, variable, assignment, pipe) c()! vectors, data.frames, etc.
+
+This should also include things about how to use the materials (e.g. slides_code.Rmd)
 :::
 
 ## Load R Packages
@@ -242,14 +244,15 @@ library(ggspatial)
 
 ## Loading DHS survey data
 
-:::{.nonincremental}
-:::{.fragment .fade-in}
+::: nonincremental
+::: {.fragment .fade-in}
 -   Recall that we downloaded **two** files for our IPUMS DHS extract
 
     -   The `.xml` file contains *metadata* about the file contents
     -   The `.dat.gz` file contains the actual data
 :::
-:::{.fragment .fade-in}
+
+::: {.fragment .fade-in}
 -   ipumsr makes it easy to load IPUMS data using these files
 
 ![](images/hex/ipumsr.png){fig-align="right" height="150"}
@@ -261,7 +264,7 @@ library(ggspatial)
 ```{r}
 #| eval: false
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml") # Change this file name!
 ```
 
 ## Loading DHS survey data {auto-animate="true"}
@@ -269,7 +272,7 @@ ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
 ```{r}
 #| eval: false
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml") # Change this file name!
 
 # Use metadata to load the data correctly
 ke_dhs <- read_ipums_micro(ke_ddi)
@@ -280,7 +283,7 @@ ke_dhs <- read_ipums_micro(ke_ddi)
 ```{r}
 #| code-line-numbers: "|8|9|10|11-20"
 # Load the metadata file
-ke_ddi <- read_ipums_ddi("data/idhs_00023.xml")
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml") # Change this file name!
 
 # Use metadata to load the data correctly
 ke_dhs <- read_ipums_micro(ke_ddi)
@@ -356,7 +359,7 @@ ke_dhs$RELIGION
 ## Exploring DHS metadata {auto-animate="true"}
 
 -   The IPUMS DHS metadata allows us to see additional details about
-each column
+    each column
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -366,12 +369,11 @@ ipums_var_info(ke_dhs)
 ```
 :::
 
-
 ## Exploring DHS metadata {auto-animate="true"}
 
-::: {.nonincremental}
+::: nonincremental
 -   The IPUMS DHS metadata allows us to see additional details about
-each column
+    each column
 :::
 
 ```{r}
@@ -383,7 +385,7 @@ ipums_var_info(ke_dhs)
 ## Exploring DHS metadata
 
 -   This metadata can be useful for determining whether our variables
-need to be cleaned before analysis
+    need to be cleaned before analysis
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -397,7 +399,7 @@ ipums_var_desc(ke_dhs$BIRTHWT)
 :::
 
 -   In this case, we will need to adjust the decimal places and remove
-missing values (later!)
+    missing values (later!)
 
 ## Exploring DHS metadata
 
@@ -448,7 +450,7 @@ Should we do some viz here...?
 ## Cleaning DHS data
 
 -   As we mentioned, some variables need to be prepraed ("cleaned")
-before analysis
+    before analysis
 
 -   For instance, missing `BIRTHWT` values are coded as large numbers
 
@@ -463,7 +465,7 @@ ke_dhs$BIRTHWT[1:5]
 
 -   We can use `if_else()` to recode these values as missing (`NA`)
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 # For values greater than 9995, convert to NA (missing)
@@ -478,7 +480,7 @@ birthwt_clean <- if_else(
 
 ## Cleaning DHS data {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We can use `if_else()` to recode these values as missing (`NA`)
 :::
 
@@ -517,7 +519,7 @@ ke_dhs$BIRTHWT[1:5]
 
 -   We can do the same with several similar variables:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 ke_dhs <- ke_dhs |>
   mutate(
@@ -531,7 +533,8 @@ ke_dhs <- ke_dhs |>
 
 -   Some variables need to be recoded into simpler categories
 
--   For `EDUCLVL`, we may want to combine the "Secondary" and "Higher" groups:
+-   For `EDUCLVL`, we may want to combine the "Secondary" and "Higher"
+    groups:
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -539,14 +542,13 @@ ke_dhs$EDUCLVL[1:5]
 ```
 :::
 
-
 ## Cleaning DHS data {auto-animate="true"}
 
 -   `case_when()` can be useful here
 
 -   You can specify multiple *conditions* and *replacement values*:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| code-line-numbers: "|2|3|4|5"
 #| eval: false
@@ -561,7 +563,7 @@ case_when(
 
 ## Cleaning DHS data {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   `case_when()` can be useful here
 
 -   You can specify multiple *conditions* and *replacement values*:
@@ -579,10 +581,10 @@ case_when(
 
 ## Cleaning DHS data
 
--   Fortunately, when we use dplyr, we don't have to indicate the name of the
-    dataset each time:
+-   Fortunately, when we use dplyr, we don't have to indicate the name
+    of the dataset each time:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 ke_dhs <- ke_dhs |>
   mutate(
@@ -600,13 +602,13 @@ ke_dhs <- ke_dhs |>
 
 -   Now we just have to do a similar process for the rest of our input
     variables!
-    
+
 -   We will save this as an exercise
 
 ```{r}
 #| echo: false
 #| results: false
-ke_dhs |> 
+ke_dhs <- ke_dhs |> 
   mutate(
     FLOOR = case_when(
       FLOOR >= 996 ~ NA,
@@ -655,13 +657,14 @@ ke_dhs <- ke_dhs |>
 ![](images/hex/stringr.png){.absolute right="10" bottom="10"
 height="150"}
 :::
+
 ## Defining our sample {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We can also use `mutate()` to create *new* columns
 -   In this case, to make an ID for each child in our sample:
-![](images/hex/stringr.png){.absolute right="10" bottom="10"
-height="150"}
+    ![](images/hex/stringr.png){.absolute right="10" bottom="10"
+    height="150"}
 :::
 
 ```{r}
@@ -686,10 +689,10 @@ ke_dhs$KIDID
 ## Defining our sample
 
 -   This last point is particularly important when considering climate
-exposure
+    exposure
 
--   People who do not consistently live in an area will not have
-been exposed to the climate data for that area!
+-   People who do not consistently live in an area will not have been
+    exposed to the climate data for that area!
 
 -   Many DHS surveys include an indication of residency status
 
@@ -699,13 +702,13 @@ been exposed to the climate data for that area!
 ## Defining our sample {auto-animate="true"}
 
 -   Unfortunately, Kenya 2014 sample only includes a more general
-variable: `RESIDENT` (Usual resident vs. visitor)
+    variable: `RESIDENT` (Usual resident vs. visitor)
 
 -   We will remove all records that aren't residents of the cluster
-where they were surveyed
+    where they were surveyed
 
 -   We can use `filter()` from dplyr to keep only records for "usual
-residents"
+    residents"
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -717,15 +720,15 @@ ke_dhs <- ke_dhs |>
 
 ## Defining our sample {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   Unfortunately, Kenya 2014 sample only includes a more general
-variable: `RESIDENT` (Usual resident vs. visitor)
+    variable: `RESIDENT` (Usual resident vs. visitor)
 
 -   We will remove all records that aren't residents of the cluster
-where they were surveyed
+    where they were surveyed
 
 -   We can use `filter()` from dplyr to keep only records for "usual
-residents"
+    residents"
 :::
 
 ```{r}
@@ -754,7 +757,7 @@ ke_dhs <- ke_dhs |>
 ::: nonincremental
 ::: {.fragment .fade-in fragment-index="1"}
 -   It can also be useful to visualize variables to identify unreliable
-data
+    data
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -803,11 +806,11 @@ ggplot(ke_dhs) +
 ::: {.fragment .fade-in}
 -   We often need to recode variables to the correct data types
 -   Sometimes categorical variables are treated as numeric variables,
-but we want them to be *factors*
+    but we want them to be *factors*
 -   A factor is the way R stores categorical data
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 ke_dhs <- as_factor(ke_dhs) # Convert all labeled columns to factors
@@ -816,10 +819,10 @@ ke_dhs <- as_factor(ke_dhs) # Convert all labeled columns to factors
 
 ## Data types {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We often need to recode variables to the correct data types
 -   Sometimes categorical variables are treated as numeric variables,
-but we want them to be *factors*
+    but we want them to be *factors*
 -   A factor is the way R stores categorical data
 :::
 
@@ -849,7 +852,7 @@ Cleaning tabular data 🧼
 ::: {.column width="60%"}
 ::: {.fragment .fade-in-then-semi-out fragment-index="1"}
 -   Location information is collected for the household groups
-("clusters") that were sampled in a survey
+    ("clusters") that were sampled in a survey
 :::
 
 ::: {.fragment .fade-in-then-semi-out fragment-index="2"}
@@ -876,13 +879,13 @@ Cleaning tabular data 🧼
 ## Access to GPS data
 
 -   Typically you must [request special
-access](https://www.dhsprogram.com/Methodology/GPS-Data.cfm) via the
-DHS program to obtain GPS coordinate data
+    access](https://www.dhsprogram.com/Methodology/GPS-Data.cfm) via the
+    DHS program to obtain GPS coordinate data
 
 -   ***For this workshop, we have generated fake GPS coordinate data!***
 
 -   These data look like what you would get from the DHS Program, but
-the coordinates have been randomly generated.
+    the coordinates have been randomly generated.
 
 ## Disclaimer
 
@@ -891,21 +894,24 @@ for demonstration only!*
 
 ## Loading GPS data in R
 
-:::{.nonincremental}
-:::{.fragment .fade-in fragment-index="1"}
+::: nonincremental
+::: {.fragment .fade-in fragment-index="1"}
 -   We will use the [sf](https://r-spatial.github.io/sf/) package (for
-***s**imple **f**eatures*)
+    ***s**imple **f**eatures*)
 :::
-:::{.fragment .fade-in fragment-index="2"}
+
+::: {.fragment .fade-in fragment-index="2"}
 -   This allows us to represent spatial data in a familiar tabular
-format
+    format
 :::
-:::{.fragment .fade-in fragment-index="3"}
+
+::: {.fragment .fade-in fragment-index="3"}
 -   If you are familiar with GIS software, you will find that you can do
-many of the same operations using sf and R
+    many of the same operations using sf and R
 :::
 :::
-:::{.fragment .fade-in fragment-index="1"}
+
+::: {.fragment .fade-in fragment-index="1"}
 ![](images/hex/sf.png){.absolute right="10" bottom="50" height="150"}
 :::
 
@@ -938,7 +944,7 @@ ke_gps
 ## Simple features
 
 -   Note that sf is used only for **vector** data. That is, data
-composed of discrete features, like points, lines, and polygons
+    composed of discrete features, like points, lines, and polygons
 
 ::: {.fragment .fade-in}
 ![](images/plp1.png){fig-align="center"}
@@ -969,7 +975,7 @@ county, etc.
 ## Mapping
 
 -   We will use the ggspatial package to produce static maps for this
-workshop
+    workshop
 
 -   ggspatial is designed to be used with the popular ggplot2 package
 
@@ -1036,11 +1042,12 @@ ggplot() +
   layer_spatial(ke_borders) +
   layer_spatial(ke_gps)
 ```
+
 ## Modifying map style {auto-animate="true"}
 
 -   We can modify the aesthetics of the map as well as the content
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 #| code-line-numbers: "|4-6|10-11|13"
@@ -1062,7 +1069,7 @@ ggplot() +
 
 ## Modifying map style {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We can modify the aesthetics of the map as well as the content
 :::
 
@@ -1110,7 +1117,7 @@ map where you color them something different than the other counties?
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   CHIRTS is provided by the [Climate Hazards
-Center](https://chc.ucsb.edu/) (CHC)
+    Center](https://chc.ucsb.edu/) (CHC)
 :::
 
 ::: {.fragment .fade-in fragment-index="2"}
@@ -1121,22 +1128,22 @@ Center](https://chc.ucsb.edu/) (CHC)
 ## What is CHIRTS?
 
 -   CHIRTS provides daily estimates for several temperature metrics at a
-0.05° (\~5 kilometer) resolution
+    0.05° (\~5 kilometer) resolution
 
 -   Data for 1983-2016
 
 -   Multiple temperature metrics to choose from (max, min, relative
-humidity, etc.)
+    humidity, etc.)
 
 -   For this demonstration, we will use **daily maximum air
-temperature** (Tmax)
+    temperature** (Tmax)
 
 ## What is CHIRTS?
 
 -   Like many climate data sources, CHIRTS is a **raster** data source
 
 -   Compared to vector data, raster data represent geographic features
-in a grid
+    in a grid
 
     -   Each cell in the grid is associated with a particular value
 
@@ -1147,7 +1154,7 @@ in a grid
 ## Obtaining CHIRTS data
 
 -   **Option 1:** [Direct
-download](http://data.chc.ucsb.edu/products/CHIRTSdaily/v1.0/africa_netcdf_p05/)
+    download](http://data.chc.ucsb.edu/products/CHIRTSdaily/v1.0/africa_netcdf_p05/)
 
 -   Can download yearly data for Africa at different resolutions
 
@@ -1158,10 +1165,10 @@ download](http://data.chc.ucsb.edu/products/CHIRTSdaily/v1.0/africa_netcdf_p05/)
 ## Obtaining CHIRTS data
 
 -   **Option 2:** The
-[`chirps`](https://docs.ropensci.org/chirps/index.html) package in R
+    [`chirps`](https://docs.ropensci.org/chirps/index.html) package in R
 
 -   Can provide parameters indicating the desired data right in your R
-console!
+    console!
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1179,14 +1186,14 @@ ke_chirts <- get_chirts(
 ## Obtaining CHIRTS data
 
 -   We have already prepared and saved some CHIRTS data, since it can
-take time/space to download and store raster data
+    take time/space to download and store raster data
 
 -   File `ke_chirts_2013.nc` in the `data` directory of the workshop
-materials
+    materials
 
 ## Raster data
 
--   Think "image" files. 
+-   Think "image" files.
 -   Like a camera: a rectangular set of pixels at a certain resolution
 
 ::: {.fragment .fade-in}
@@ -1203,24 +1210,27 @@ plot(ke_chirts[[1]])
 
 ## Raster data in R
 
-:::{.nonincremental}
-:::{.fragment .fade-in fragment-index="1"}
+::: nonincremental
+::: {.fragment .fade-in fragment-index="1"}
 -   sf does not handle raster data
 :::
-:::{.fragment .fade-in fragment-index="2"}
+
+::: {.fragment .fade-in fragment-index="2"}
 -   Instead, we will use
-[terra](https://rspatial.github.io/terra/index.html)
+    [terra](https://rspatial.github.io/terra/index.html)
 :::
-:::{.fragment .fade-in fragment-index="3"}
+
+::: {.fragment .fade-in fragment-index="3"}
 -   Unlike vector data, raster data is not easily handled in a tabular
-format
+    format
 :::
-:::{.fragment .fade-in fragment-index="4"}
+
+::: {.fragment .fade-in fragment-index="4"}
 -   terra uses its own set of R data structures to represent raster data
 :::
 :::
 
-:::{.fragment .fade-in fragment-index="2"}
+::: {.fragment .fade-in fragment-index="2"}
 ![](images/hex/terra.png){.absolute right="10" bottom="50" height="150"}
 :::
 
@@ -1272,7 +1282,7 @@ ke_chirts
 
 -   Access specific layers with `[[`
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 ke_chirts[[1]]
@@ -1281,7 +1291,7 @@ ke_chirts[[1]]
 
 ## Raster data in R {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   Access specific layers with `[[`
 :::
 
@@ -1393,7 +1403,7 @@ ke_chirts <- classify(ke_chirts, m)
 
 ggplot() +
   layer_spatial(ke_chirts[[1]], alpha = 0.9) +
-  layer_spatial(ke_borders, fill = NA, color = "black")
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5)
 ```
 
 ## Mapping with raster data {auto-animate="true"}
@@ -1432,7 +1442,7 @@ values (`app()`. `tapp()` will be later) - Plotting
 ## Thinking spatially
 
 -   Spatial data sounds flashy, but we typically have to simplify it
-before it can be useful
+    before it can be useful
 
 -   We have detailed daily maximum temperature for an entire country
 
@@ -1476,12 +1486,12 @@ challenges would be to measure each of them, etc.
 -   Climate effects rarely happen only at a single point!
 
 -   The climate of the *general area* around a cluster might provide a
-better representation of how it impacts the population in an area
+    better representation of how it impacts the population in an area
 
 ## Buffering
 
 -   We can capture this by creating a *spatial buffer*, or a area around
-each cluster point
+    each cluster point
 
 -   However, we first need to deal with another technical detail
 
@@ -1507,7 +1517,7 @@ ke_gps[, "geometry"]
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   This means our buffer zone size would vary by the location of each
-cluster!
+    cluster!
 :::
 
 ::: {.fragment .fade-in fragment-index="1"}
@@ -1518,7 +1528,7 @@ cluster!
 ## Projecting
 
 -   We need to first transform our coordinate system so that our units
-are in meters
+    are in meters
 
 -   We need to *project* our spherical coordinates onto a flat surface
 
@@ -1526,8 +1536,9 @@ are in meters
 ![](images/map_proj.png){fig-align="center" height="400"}
 :::
 
-:::{.notes}
-Source: https://gistbok.ucgis.org/bok-topics/2017-quarter-03/map-projections
+::: notes
+Source:
+https://gistbok.ucgis.org/bok-topics/2017-quarter-03/map-projections
 :::
 
 ## Selecting a Projection
@@ -1539,7 +1550,7 @@ Source: https://gistbok.ucgis.org/bok-topics/2017-quarter-03/map-projections
 
 ::: {.fragment .fade-in fragment-index="2"}
 -   However, different projections preserve different attributes of
-space
+    space
 
     -   Distance
     -   Area
@@ -1556,7 +1567,7 @@ height="400"}
 ## Selecting a Projection
 
 -   There are also projection options designed to minimize distortion in
-specific areas
+    specific areas
 -   One option: Universal Transverse Mercator (UTM)
 -   UTM has different zones for different areas on the globe
 
@@ -1614,7 +1625,7 @@ ggplot() +
 ::: nonincremental
 -   The map looks pretty much the same!
 -   If we were to use a less appropriate projection, the difference
-would be more obvious (see exercises)
+    would be more obvious (see exercises)
 :::
 
 ## Creating Buffers {auto-animate="true"}
@@ -1622,7 +1633,7 @@ would be more obvious (see exercises)
 -   Now that our data are in meters, we can buffer
 -   We will use a 10km buffer in this case
 -   In the real world, this decision should be based on your research
-question or the geography of interest!
+    question or the geography of interest!
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1637,7 +1648,7 @@ ke_buffer <- st_buffer(ke_gps, dist = 10000)
 -   Now that our data are in meters, we can buffer
 -   We will use a 10km buffer in this case
 -   In the real world, this decision should be based on your research
-question or the geography of interest!
+    question or the geography of interest!
 :::
 
 ```{r}
@@ -1663,7 +1674,7 @@ ggplot() +
 ::: nonincremental
 ::: {.fragment .fade-in}
 -   We can return back to our latitude/longitude coordinates now that we
-have constructed our buffer zones
+    have constructed our buffer zones
 
 ```{r}
 ke_buffer <- st_transform(ke_buffer, crs = 4326) # WGS 84 CRS
@@ -1688,16 +1699,16 @@ changes the projection visually
 
 -   Our CHIRTS data form a *daily time series*
 -   But the children in our DHS survey were born at specific points in
-time
+    time
 -   We need to include temperature data from the *relevant time period*
-for each child
+    for each child
 
 ## Temporal aggregation
 
 ::: nonincremental
 ::: {.fragment .fade-in}
 -   How to simplify our CHIRTS data into temperature exposure summaries
-for each child?
+    for each child?
 :::
 
 ::: {.fragment .fade-in}
@@ -1721,7 +1732,7 @@ for each child?
 
 -   Use terra!
 -   If aggregating the entire time series, use a single summary
-function:
+    function:
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -1735,7 +1746,7 @@ ke_chirts_mean <- mean(ke_chirts)
 ::: nonincremental
 -   Use terra!
 -   If aggregating the entire time series, use a single summary
-function:
+    function:
 :::
 
 ```{r}
@@ -1748,9 +1759,9 @@ ke_chirts_mean
 ## Average temperature {auto-animate="true"}
 
 -   Note that this aggregates **cells** across **layers** (time), so we
-will still have data for our full *spatial* region
+    will still have data for our full *spatial* region
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| echo: false
 #| fig-align: center
@@ -1774,32 +1785,51 @@ ggplot() +
 <!-- -   We can apply operations to all of our raster cells at once: -->
 
 <!-- ::: {.fragment .fade-in} -->
+
 <!-- ```{r} -->
+
 <!-- # Get a binary indicator of whether each cell is above 35 degrees -->
+
 <!-- ke_bin <- ke_chirts > 35 -->
+
 <!-- ``` -->
+
 <!-- ::: -->
 
 <!-- ## 2. Count of hot days -->
 
 <!-- :::{.nonincremental} -->
+
 <!-- -   Another option: days above a threshold temperature -->
 
 <!-- -   We can do simple operations to all of our raster cells at once: -->
+
 <!-- ::: -->
 
 <!-- ```{r} -->
+
 <!-- #| echo: false -->
+
 <!-- #| fig-align: center -->
+
 <!-- # Get a binary indicator of whether each cell is above -->
+
 <!-- ggplot() + -->
+
 <!--   layer_spatial( -->
+
 <!--     mask(ke_bin[[1]], ke_borders), -->
+
 <!--     alpha = 0.9 -->
+
 <!--   ) + -->
+
 <!--   layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) + -->
+
 <!--   labs(title = "Areas above 35°C", subtitle = "January 1, 2013", fill = "") + -->
+
 <!--   scale_fill_manual(values = c("#d6d6d6", "#872e38"), na.translate = FALSE) -->
+
 <!-- ``` -->
 
 <!-- ## 2. Count of hot days -->
@@ -1807,36 +1837,51 @@ ggplot() +
 <!-- -   Now we can sum to count the number of days above 35 degrees -->
 
 <!-- :::{.fragment .fade-in} -->
+
 <!-- ```{r} -->
+
 <!-- ke_count_above_35 <- sum(ke_bin) -->
+
 <!-- ``` -->
+
 <!-- ::: -->
 
 <!-- ## 2. Count of hot days -->
 
 <!-- :::{.nonincremental} -->
+
 <!-- -   Now we can count the number of days above 35 degrees by summing: -->
+
 <!-- ::: -->
 
 <!-- ```{r} -->
+
 <!-- #| echo: false -->
+
 <!-- #| fig-align: center -->
+
 <!-- ggplot() + -->
+
 <!--   layer_spatial(mask(ke_count_above_35, ke_borders), alpha = 0.9) + -->
+
 <!--   layer_spatial(ke_borders, fill = NA, color = "#444444") + -->
+
 <!--   labs(title = "Number of days above 35°C", subtitle = "Kenya, 2013", fill = "") + -->
+
 <!--   scale_fill_chirts_c() -->
+
 <!-- ``` -->
 
 ## Monthly aggregation
 
--   This approach produces an average for the *entire* time series of CHIRTS 
-    data
+-   This approach produces an average for the *entire* time series of
+    CHIRTS data
 
--   The children in our DHS survey were born at *specific* points in time
+-   The children in our DHS survey were born at *specific* points in
+    time
 
--   This single average does not reflect the conditions that each
-    child has experienced!
+-   This single average does not reflect the conditions that each child
+    has experienced!
 
 ## Monthly aggregation
 
@@ -1844,8 +1889,8 @@ ggplot() +
 
 -   We can summarize our temperature data to the *monthly* level
 
-    -   Then we can isolate the temperature conditions **around each child's
-        birth date**
+    -   Then we can isolate the temperature conditions **around each
+        child's birth date**
 
 ## Monthly aggregation {auto-animate="true"}
 
@@ -1855,7 +1900,7 @@ ggplot() +
 
 -   Use `tapp()` to summarize for specific layer (time) groups:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 #| code-line-numbers: "|3|4|5"
@@ -1870,7 +1915,7 @@ ke_chirts_mean_mnths <- tapp(
 
 ## Monthly aggregation {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   Recall that our raster has a `time` component
 
 -   We can use this to aggregate our raster to the monthly level
@@ -1891,61 +1936,104 @@ ke_chirts_mean_mnths
 ```
 
 <!-- ::: {.fragment .fade-in} -->
+
 <!-- ```{r} -->
+
 <!-- #| code-line-numbers: "|2|3|4|" -->
+
 <!-- #| eval: false -->
+
 <!-- ke_count_above_35_months <- tapp( -->
+
 <!--   ke_bin,              # Input raster -->
+
 <!--   fun = mean,          # Calculate mean (i.e. proportion of days above 35) -->
+
 <!--   index = "yearmonths" # Group by year + month -->
+
 <!-- ) -->
+
 <!-- ``` -->
+
 <!-- ::: -->
 
 <!-- --- -->
 
 <!-- ```{r} -->
+
 <!-- #| echo: false -->
+
 <!-- #| cache: true -->
+
 <!-- ke_count_above_35_months <- tapp( -->
+
 <!--   ke_bin, # Input raster -->
+
 <!--   fun = mean, # Calculate mean (i.e. proportion of days above 35) -->
+
 <!--   index = "yearmonths" # Group by year + month -->
+
 <!-- ) -->
 
 <!-- months <- c("January", "February", "March", "April", -->
+
 <!--             "May", "June", "July", "August", -->
+
 <!--             "September", "October", "November", "December") -->
 
 <!-- panels <- purrr::map2( -->
+
 <!--   split_raster(ke_count_above_35_months), -->
+
 <!--   months, -->
+
 <!--   function(r, m) { -->
+
 <!--     chirts_panel_continuous( -->
+
 <!--       r, -->
+
 <!--       borders = ke_borders, -->
+
 <!--       panel_title = m, -->
+
 <!--       show_scale = FALSE, -->
+
 <!--       fill_lab = "" -->
+
 <!--     ) -->
+
 <!--   } -->
+
 <!-- ) -->
+
 <!-- ``` -->
 
 <!-- ```{r} -->
+
 <!-- #| echo: false -->
+
 <!-- #| cache: true -->
+
 <!-- #| fig-align: center -->
+
 <!-- patchwork::wrap_plots(panels) + -->
+
 <!--   patchwork::plot_layout(guides = "collect", ncol = 6) + -->
+
 <!--   patchwork::plot_annotation( -->
+
 <!--     title = "Proportion of Days above 35°C", -->
+
 <!--     subtitle = "Kenya, 2013", -->
+
 <!--     caption = "Source: Climate Hazards Center" -->
+
 <!--   ) -->
+
 <!-- ``` -->
 
----
+------------------------------------------------------------------------
 
 ```{r}
 #| echo: false
@@ -1988,8 +2076,8 @@ patchwork::wrap_plots(panels) +
 -   It can sometimes be useful to consider temperature in context of the
     "normal" for a region
 
--   What is considered "hot" in one area might not be in another area with
-    a different baseline climate
+-   What is considered "hot" in one area might not be in another area
+    with a different baseline climate
 
 ## Temperature deviation
 
@@ -1999,10 +2087,10 @@ patchwork::wrap_plots(panels) +
 
 ## Temperature deviation {auto-animate="true"}
 
--   To speed things up, we have already created rasters containing the 10-year
-    average temperature for each month
+-   To speed things up, we have already created rasters containing the
+    10-year average temperature for each month
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 # List all 12 monthly average files
@@ -2012,9 +2100,9 @@ chirts_mnth_means <- list.files("data/chirts", full.names = TRUE)
 
 ## Temperature deviation {auto-animate="true"}
 
-:::{.nonincremental}
--   To speed things up, we have already created rasters containing the 10-year
-    average temperature for each month
+::: nonincremental
+-   To speed things up, we have already created rasters containing the
+    10-year average temperature for each month
 :::
 
 ```{r}
@@ -2027,19 +2115,19 @@ chirts_norm <- rast(chirts_mnth_means)
 
 ## Temperature deviation
 
-:::{.nonincremental}
-:::{.fragment .fade-in}
+::: nonincremental
+::: {.fragment .fade-in}
 -   We can perform arithmetic between rasters as well
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 -   We have average monthly temperature
 
     -   For 2013
     -   For 2000-2009 (our "normal")
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 -   We can subtract the rasters from each other layer by layer
 :::
 :::
@@ -2063,10 +2151,10 @@ chirts_dev
 
 ## Temperature deviation
 
--   We still have a raster, but the values now reference *differences* between
-    2013 temperature and a "normal" temperature
+-   We still have a raster, but the values now reference *differences*
+    between 2013 temperature and a "normal" temperature
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| echo: false
 #| cache: true
@@ -2087,7 +2175,7 @@ ggplot() +
 ```
 :::
 
----
+------------------------------------------------------------------------
 
 ```{r}
 #| echo: false
@@ -2127,8 +2215,8 @@ patchwork::wrap_plots(panels) +
 
 -   We will explore some more in the demo for this section!
 
--   For the rest of our demo, we'll use *average monthly temperature* to keep
-    things simple
+-   For the rest of our demo, we'll use *average monthly temperature* to
+    keep things simple
 
 # Questions?
 
@@ -2137,14 +2225,14 @@ patchwork::wrap_plots(panels) +
 -   Now we have our raster aggregated temporally
 -   How do we identify the temperature values at our cluster locations?
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| echo: false
 #| fig-align: center
-ke_count_to_plot <- mask(ke_chirts_mean_mnths[[1]], ke_borders)
+ke_mean_to_plot <- mask(ke_chirts_mean_mnths[[1]], ke_borders)
 
 ggplot() +
-  layer_spatial(ke_count_to_plot, alpha = 0.9) +
+  layer_spatial(ke_mean_to_plot, alpha = 0.9) +
   layer_spatial(ke_borders, fill = NA, color = "#444444") +
   layer_spatial(ke_buffer, fill = NA, color = alpha("black", 0.5)) +
   labs(title = "Mean Temperature (°C)", subtitle = "January, 2013", fill = "") +
@@ -2160,7 +2248,7 @@ clust1 <- ke_buffer |>
   filter(DHSID == "KE201400001487")
 ```
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| echo: false
 #| fig-align: center
@@ -2189,9 +2277,9 @@ extract(ke_chirts_mean_mnths[[1]], clust1)
 ## Spatial aggregation
 
 -   Note that this includes only the 10 cells whose center lies within
-our cluster polygon.
+    our cluster polygon.
 -   Use `weights = TRUE` to get the weights for each cell based on
-intersection area:
+    intersection area:
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -2223,9 +2311,9 @@ extract(
 ## Scaling up
 
 -   We can easily apply the same operation to all of our cluster regions
-at once
+    at once
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| cache: true
 #| code-line-numbers: "|2-3"
@@ -2242,10 +2330,10 @@ ke_chirts_clust <- extract(
 
 ::: nonincremental
 -   It will be useful to use the `DHSID` cluster ID instead of the index
-ID that `extract()` produces.
+    ID that `extract()` produces.
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 # Update to use cluster IDs
@@ -2257,7 +2345,7 @@ ke_chirts_clust$ID <- ke_buffer$DHSID
 
 ::: nonincremental
 -   It will be useful to use the `DHSID` cluster ID instead of the index
-ID that `extract()` produces.
+    ID that `extract()` produces.
 :::
 
 ```{r}
@@ -2295,12 +2383,12 @@ approximations of real-world impact pathways
 
 -   `extract()` produces data in **wide** format
 
--   Each *column* corresponds to a month of temperature data for a
-given cluster
+-   Each *column* corresponds to a month of temperature data for a given
+    cluster
 
 -   This is a common format in GIS software
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 5
 ke_chirts_clust
@@ -2311,14 +2399,14 @@ ke_chirts_clust
 
 -   However, tabular data is often handled in **long** format
 
--   Each *row* corresponds to a month of temperature data for a
-given cluster
+-   Each *row* corresponds to a month of temperature data for a given
+    cluster
 
 ## Wide vs. long format {auto-animate="true"}
 
 -   We can convert our cluster data to long format with `pivot_longer()`
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 5
 ke_chirts_long <- ke_chirts_clust |>
@@ -2332,9 +2420,9 @@ ke_chirts_long <- ke_chirts_clust |>
 
 ## Wide vs. long format {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We had 1594 clusters and 12 months of data per cluster, so we should
-end up with `1594 * 12 = 19128` rows
+    end up with `1594 * 12 = 19128` rows
 
 ```{r}
 #| out.lines: 10
@@ -2353,7 +2441,7 @@ ke_chirts_long
 
 -   DHS uses **century-month codes** (CMCs) to represent dates
 -   CMC codes represent dates as the number of months that have elapsed
-since year 1900
+    since year 1900
 
 ::: {.fragment .fade-in}
 ```{r}
@@ -2366,7 +2454,7 @@ ke_dhs$KIDDOBCMC
 
 -   However, our extracted monthly CHIRTS data is stored as a string:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 5
 ke_chirts_long$CHIRTS_DATE
@@ -2376,11 +2464,11 @@ ke_chirts_long$CHIRTS_DATE
 ## Converting Dates
 
 -   We'll need to convert these to a single format before we can use the
-two data sources together
+    two data sources together
 -   Fortunately, the IPUMS DHS variable info describes how to convert
-between CMC codes
+    between CMC codes
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 ipums_var_desc(ke_ddi, "KIDDOBCMC")
@@ -2398,7 +2486,7 @@ ipums_var_desc(ke_ddi, "KIDDOBCMC")
 ## Converting Dates {auto-animate="true"}
 
 -   We can use the indicated formula to convert our CHIRTS dates into
-CMC format
+    CMC format
 -   First, we need to convert the string format to year and month
 -   We will remove the `"ym_"` prefix first:
 
@@ -2413,17 +2501,15 @@ ke_chirts_long <- ke_chirts_long |>
 
 ## Converting Dates {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   We can use the indicated formula to convert our CHIRTS dates into
-CMC format
+    CMC format
 -   First, we need to convert the string format to year and month
 -   We will remove the `"ym_"` prefix first:
 :::
 
 ```{r}
 #| out.lines: 7
-library(stringr)
-
 # Replace "ym_" with ""
 ke_chirts_long <- ke_chirts_long |>
   mutate(CHIRTS_DATE = str_replace(CHIRTS_DATE, "ym_", ""))
@@ -2466,11 +2552,11 @@ ke_chirts_long
 ## Converting Dates
 
 -   Finally, we can convert these dates into CMC codes using the formula
-from before
+    from before
 
     -   `(year - 1900) * 12 + month`
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| out.lines: 5
 ke_chirts_long <- ke_chirts_long |>
@@ -2486,7 +2572,7 @@ ke_chirts_long
 -   We can combine all the above steps into a single R expression!
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 ke_chirts_long <- ke_chirts_clust |>
@@ -2507,11 +2593,12 @@ ke_chirts_long <- ke_chirts_clust |>
 
 ## What we have at this point
 
--   Our DHS and CHIRTS data now have been reformatted so we can link records
+-   Our DHS and CHIRTS data now have been reformatted so we can link
+    records
 
 -   Let's peek at what we have:
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 # Cluster-level monthly CHIRTS data
 ke_chirts_long
@@ -2520,8 +2607,9 @@ ke_chirts_long
 
 ## What we have at this point
 
-:::{.nonincremental}
--   Our DHS and CHIRTS data now have been reformatted so we can link records
+::: nonincremental
+-   Our DHS and CHIRTS data now have been reformatted so we can link
+    records
 
 -   Let's peek at what we have:
 :::
@@ -2541,11 +2629,11 @@ ke_dhs[, c("DHSID", "KIDID", "KIDDOBCMC", "BIRTHWT")]
 ## Joining climate and DHS data {auto-animate="true"}
 
 -   In this case, we only want to retain records that have values in
-*both* the tabular data *and* the climate data
+    *both* the tabular data *and* the climate data
 
 -   This corresponds to an "inner" join
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| eval: false
 inner_join(
@@ -2557,9 +2645,9 @@ inner_join(
 
 ## Joining climate and DHS data {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   In this case, we only want to retain records that have values in
-*both* the tabular data *and* the climate data
+    *both* the tabular data *and* the climate data
 
 -   This corresponds to an "inner" join
 :::
@@ -2583,13 +2671,13 @@ inner_join(
 
 ## Joining climate and DHS data {auto-animate="true"}
 
-:::{.nonincremental}
+::: nonincremental
 -   To match records based on ***cluster***:
 
     -   The `DHSID` in the DHS data must match the `ID` in the CHIRTS
         monthly data
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 -   To match records based on ***month***:
 
     -   The child date of birth (`KIDDOBCMC`) must match the month of
@@ -2597,7 +2685,7 @@ inner_join(
 :::
 :::
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| code-line-numbers: "|4"
 ke_dhs_chirts <- inner_join(
@@ -2621,7 +2709,7 @@ ke_dhs_chirts |>
 
 -   Reminder: these are fake data, so we don't expect a relationship!
 
-:::{.fragment .fade-in}
+::: {.fragment .fade-in}
 ```{r}
 #| fig-align: center
 ggplot(ke_dhs_chirts) +

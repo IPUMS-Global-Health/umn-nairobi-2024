@@ -582,6 +582,7 @@
 <p>Introduction to R + RStudio 💻</p>
 <aside class="notes">
 <p>RStudio layout – editor vs.&nbsp;console, environment, files, etc. Assignment Data types Basic arithmetic Comments / whitespace Function help documentation Packages Troubleshooting techniques Basic functions/functional programming Function syntax Jargon (function, argument, variable, assignment, pipe) c()! vectors, data.frames, etc.</p>
+<p>This should also include things about how to use the materials (e.g.&nbsp;slides_code.Rmd)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -649,14 +650,14 @@
 <h2 data-id="quarto-animate-title">Loading DHS survey data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb2-1" class="hljs-ln-code"><a href=""></a><span class="co"># Load the metadata file</span></span>
-<span id="cb2-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>) <span class="co"># Change this file name!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="loading-dhs-survey-data-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Loading DHS survey data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb3-1" class="hljs-ln-code"><a href=""></a><span class="co"># Load the metadata file</span></span>
-<span id="cb3-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>)</span>
+<span id="cb3-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>) <span class="co"># Change this file name!</span></span>
 <span id="cb3-3" class="hljs-ln-code"><a href=""></a></span>
 <span id="cb3-4" class="hljs-ln-code"><a href=""></a><span class="co"># Use metadata to load the data correctly</span></span>
 <span id="cb3-5" class="hljs-ln-code"><a href=""></a>ke_dhs <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ke_ddi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -666,7 +667,7 @@
 <h2 data-id="quarto-animate-title">Loading DHS survey data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4" data-code-line-numbers="|8|9|10|11-20"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb4-1" class="hljs-ln-code"><a href=""></a><span class="co"># Load the metadata file</span></span>
-<span id="cb4-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>)</span>
+<span id="cb4-2" class="hljs-ln-code"><a href=""></a>ke_ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/idhs_00023.xml"</span>) <span class="co"># Change this file name!</span></span>
 <span id="cb4-3" class="hljs-ln-code"><a href=""></a></span>
 <span id="cb4-4" class="hljs-ln-code"><a href=""></a><span class="co"># Use metadata to load the data correctly</span></span>
 <span id="cb4-5" class="hljs-ln-code"><a href=""></a>ke_dhs <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ke_ddi)</span>
@@ -1959,7 +1960,7 @@
 <span id="cb54-4" class="hljs-ln-code"><a href=""></a></span>
 <span id="cb54-5" class="hljs-ln-code"><a href=""></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb54-6" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_chirts[[<span class="dv">1</span>]], <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb54-7" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_borders, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb54-7" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_borders, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"#4c4c4c"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mapping-with-raster-data-2" class="slide level2" data-auto-animate="true">
@@ -3079,21 +3080,19 @@
 </ul>
 </div>
 <div class="cell" data-out.lines="7">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb85-1" class="hljs-ln-code"><a href=""></a><span class="fu">library</span>(stringr)</span>
-<span id="cb85-2" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb85-3" class="hljs-ln-code"><a href=""></a><span class="co"># Replace "ym_" with ""</span></span>
-<span id="cb85-4" class="hljs-ln-code"><a href=""></a>ke_chirts_long <span class="ot">&lt;-</span> ke_chirts_long <span class="sc">|&gt;</span></span>
-<span id="cb85-5" class="hljs-ln-code"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">CHIRTS_DATE =</span> <span class="fu">str_replace</span>(CHIRTS_DATE, <span class="st">"ym_"</span>, <span class="st">""</span>))</span>
-<span id="cb85-6" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb85-7" class="hljs-ln-code"><a href=""></a>ke_chirts_long</span>
-<span id="cb85-8" class="hljs-ln-code"><a href=""></a><span class="co">#&gt; # A tibble: 19,128 × 3</span></span>
-<span id="cb85-9" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;    ID             CHIRTS_DATE MEAN_TEMP</span></span>
-<span id="cb85-10" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;dbl&gt;</span></span>
-<span id="cb85-11" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  1 KE201400000001 201301           25.5</span></span>
-<span id="cb85-12" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  2 KE201400000001 201302           26.9</span></span>
-<span id="cb85-13" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  3 KE201400000001 201303           26.7</span></span>
-<span id="cb85-14" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  4 KE201400000001 201304           24.0</span></span>
-<span id="cb85-15" class="hljs-ln-code"><a href=""></a>....</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb85-1" class="hljs-ln-code"><a href=""></a><span class="co"># Replace "ym_" with ""</span></span>
+<span id="cb85-2" class="hljs-ln-code"><a href=""></a>ke_chirts_long <span class="ot">&lt;-</span> ke_chirts_long <span class="sc">|&gt;</span></span>
+<span id="cb85-3" class="hljs-ln-code"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">CHIRTS_DATE =</span> <span class="fu">str_replace</span>(CHIRTS_DATE, <span class="st">"ym_"</span>, <span class="st">""</span>))</span>
+<span id="cb85-4" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb85-5" class="hljs-ln-code"><a href=""></a>ke_chirts_long</span>
+<span id="cb85-6" class="hljs-ln-code"><a href=""></a><span class="co">#&gt; # A tibble: 19,128 × 3</span></span>
+<span id="cb85-7" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;    ID             CHIRTS_DATE MEAN_TEMP</span></span>
+<span id="cb85-8" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;dbl&gt;</span></span>
+<span id="cb85-9" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  1 KE201400000001 201301           25.5</span></span>
+<span id="cb85-10" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  2 KE201400000001 201302           26.9</span></span>
+<span id="cb85-11" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  3 KE201400000001 201303           26.7</span></span>
+<span id="cb85-12" class="hljs-ln-code"><a href=""></a><span class="co">#&gt;  4 KE201400000001 201304           24.0</span></span>
+<span id="cb85-13" class="hljs-ln-code"><a href=""></a>....</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="converting-dates-3" class="slide level2" data-auto-animate="true">

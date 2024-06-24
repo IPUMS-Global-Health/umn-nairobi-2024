@@ -1,0 +1,701 @@
+---
+title: Multilevel Modeling and Climate Data Analysis Workshop
+subtitle: Workshop code
+output: html_document
+---
+
+```{r}
+#| echo: false
+source("R/utils.R")
+
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n), "....\n")
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
+```
+
+# 1. Setup
+
+# 2. R Basics
+
+## Load R Packages
+
+```{r}
+#| message: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(ipumsr)
+library(sf)
+library(terra)
+library(ggspatial)
+library(lubridate)
+```
+
+# 3. Tabular DHS Data
+
+## Loading DHS survey data
+
+*Note: You will need to update this file name to match your DHS extract number!*
+
+```{r}
+# Load the metadata file
+ke_ddi <- read_ipums_ddi("data/idhs_00023.xml") # Use your own file name here 
+
+# Use metadata to load the data correctly
+ke_dhs <- read_ipums_micro(ke_ddi)
+
+ke_dhs
+```
+
+## Exploring our DHS data
+
+```{r}
+colnames(ke_dhs)
+```
+
+```{r}
+ke_dhs[98, c(1, 2, 3)]
+```
+
+```{r}
+ke_dhs[, "DHSID"]
+```
+
+```{r}
+#| out.lines: 5
+ke_dhs$RELIGION
+```
+
+## Exploring DHS metadata
+
+```{r}
+# Display variable information for all variables in our file
+ipums_var_info(ke_dhs)
+```
+
+```{r}
+ipums_var_desc(ke_dhs$BIRTHWT)
+```
+
+```{r}
+ipums_val_labels(ke_dhs$RELIGION)
+```
+
+```{r}
+ipums_val_labels(ke_dhs$BIRTHWT)
+```
+
+## Cleaning DHS data
+
+```{r}
+ke_dhs$BIRTHWT[1:5]
+```
+
+```{r}
+# For values greater than 9995, convert to NA (missing)
+# Otherwise, divide by 1000 to convert decimal places appropriately
+birthwt_clean <- if_else(
+  ke_dhs$BIRTHWT > 9995, # Condition
+  NA,                    # Replacement if TRUE
+  ke_dhs$BIRTHWT / 1000  # Replacement if FALSE
+)
+
+birthwt_clean[1:5]
+```
+
+```{r}
+ke_dhs <- ke_dhs |>
+  mutate(BIRTHWT = if_else(BIRTHWT > 9995, NA, BIRTHWT / 1000))
+
+ke_dhs$BIRTHWT[1:5]
+```
+
+```{r}
+ke_dhs <- ke_dhs |>
+  mutate(
+    HEIGHTFEM = if_else(HEIGHTFEM >= 9994, NA, HEIGHTFEM / 10),
+    BIRTHWTREF = if_else(BIRTHWTREF >= 7, NA, BIRTHWTREF)
+  )
+```
+
+```{r}
+ke_dhs$EDUCLVL[1:5]
+```
+
+```{r}
+#| out.lines: 5
+case_when(
+  ke_dhs$EDUCLVL == 8 ~ NA, 
+  ke_dhs$EDUCLVL >= 2 ~ "Secondary+",
+  ke_dhs$EDUCLVL == 1 ~ "Primary",
+  TRUE ~ "None"
+)
+```
+
+```{r}
+ke_dhs <- ke_dhs |>
+  mutate(
+    EDUCLVL = case_when(
+      EDUCLVL == 8 ~ NA,
+      EDUCLVL >= 2 ~ "Secondary+",
+      EDUCLVL == 1 ~ "Primary",
+      TRUE ~ "None"
+    )
+  )
+```
+
+Note: this is not displayed in slides but should be run in demo...demo code to be included in this file?
+
+```{r}
+ke_dhs <- ke_dhs |> 
+  mutate(
+    FLOOR = case_when(
+      FLOOR >= 996 ~ NA,
+      FLOOR >= 300 ~ "Finished",
+      TRUE ~ "Unfinished"
+    ),
+    TOILETTYPE = case_when(
+      TOILETTYPE == 0 ~ "No facility",
+      TOILETTYPE >= 9996 ~ NA,
+      TOILETTYPE >= 2000 ~ "Non-flush",
+      TRUE ~ "Flush"
+    ),
+    DRINKWTR = case_when(
+      DRINKWTR >= 9996 ~ NA,
+      DRINKWTR >= 4000 ~ "Other",
+      DRINKWTR >= 3000 ~ "Surface",
+      DRINKWTR >= 2000 ~ "Well",
+      TRUE ~ "Piped"
+    ),
+    FEVRECENT = case_when(
+      FEVRECENT >= 97 ~ NA,
+      FEVRECENT >= 20 ~ "Yes",
+      TRUE ~ "No"
+    ),
+    DIARRECENT = case_when(
+      DIARRECENT >= 97 ~ NA,
+      DIARRECENT >= 20 ~ "Yes",
+      TRUE ~ "No"
+    )
+  )
+```
+
+## Defining our sample
+
+```{r}
+#| out.lines: 5
+# str_squish() removes excess whitespace in the ID strings
+ke_dhs <- ke_dhs |>
+  mutate(KIDID = str_squish(paste(IDHSPID, BIDX)))
+
+ke_dhs$KIDID
+```
+
+```{r}
+#| out.lines: 5
+ke_dhs <- ke_dhs |>
+  filter(RESIDENT == 1)
+
+ke_dhs$RESIDENT
+```
+
+```{r}
+ke_dhs <- ke_dhs |>
+  filter(!is.na(BIRTHWT))
+```
+
+## Visualizing our sample
+
+```{r}
+#| fig-height: 4
+ggplot(ke_dhs) +
+  geom_histogram(aes(x = BIRTHWT), bins = 70)
+```
+
+## Data types
+
+```{r}
+#| out.lines: 5
+ke_dhs <- as_factor(ke_dhs) # Convert all labeled columns to factors
+
+ke_dhs$RESIDENT
+```
+
+# 4. DHS GPS Data
+
+## Loading GPS data in R
+
+```{r}
+# Reminder: these are fake coordinates!
+ke_gps <- st_read("data/ke_gps.shp", quiet = TRUE)
+
+ke_gps
+```
+
+## Mapping
+
+```{r}
+ggplot() +
+  layer_spatial(ke_gps) +
+  theme_minimal()
+```
+
+```{r}
+ke_borders <- st_read(
+  "data/ke_boundaries/sdr_subnational_boundaries2.shp", 
+  quiet = TRUE
+)
+```
+
+```{r}
+theme_set(theme_minimal())
+
+ggplot() +
+  layer_spatial(ke_borders) +
+  layer_spatial(ke_gps)
+```
+
+```{r}
+ggplot() +
+  layer_spatial(
+    ke_borders,
+    fill = "#F6E6CB",  # Polygon fill color
+    color = "#7f7f7f", # Polygon outline color
+    linewidth = 0.5    # Polygon line width
+  ) +
+  layer_spatial(
+    ke_gps,
+    alpha = 0.2,       # Cluster point transparency
+    color = "#444444"  # Cluster point color
+  ) +
+  labs(title = "DHS Cluster Locations", subtitle = "Note: falsified coordinates")
+```
+
+# 5. Climate Data
+
+## Obtaining CHIRTS data
+
+```{r}
+#| eval: false
+library(chirps)
+
+ke_chirts <- get_chirts(
+  vect(ke_borders),                      # Spatial range
+  dates = c("2013-01-01", "2013-12-31"), # Date range
+  var = "Tmax"                           # Desired temperature variable
+)
+```
+
+## Raster data in R
+
+```{r}
+ke_chirts <- rast("data/ke_chirts_2013.nc") # Our pre-saved CHIRTS NetCDF
+
+ke_chirts
+```
+
+```{r}
+ke_chirts[[1]]
+```
+
+```{r}
+#| out.lines: 5
+# Get raster cell values (in this case, max temperature for that cell)
+values(ke_chirts)
+```
+
+```{r}
+# Number of layers
+nlyr(ke_chirts)
+```
+
+```{r}
+#| out.lines: 5
+# Date that corresponds to each layer
+time(ke_chirts)
+```
+
+## Mapping with raster data
+
+```{r}
+# Reclassify missing values
+m <- matrix(c(-9999, NA), nrow = 1)
+ke_chirts <- classify(ke_chirts, m)
+
+ggplot() +
+  layer_spatial(ke_chirts[[1]], alpha = 0.9) +
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5)
+```
+
+# 6. Working with Space and Time
+
+# 6.1 Transforming Vector Data
+
+## Projecting
+
+```{r}
+ke_gps[, "geometry"]
+```
+
+## Projection in R
+
+```{r}
+ke_gps <- st_transform(ke_gps, crs = 32637)
+
+ke_gps[, "geometry"]
+```
+
+```{r}
+ggplot() +
+  layer_spatial(ke_gps)
+```
+
+## Creating Buffers
+
+```{r}
+ke_buffer <- st_buffer(ke_gps, dist = 10000)
+
+ke_buffer[, "geometry"]
+```
+
+```{r}
+ggplot() +
+  layer_spatial(ke_buffer, alpha = 0)
+```
+
+## Transform Back
+
+```{r}
+ke_buffer <- st_transform(ke_buffer, crs = 4326) # WGS 84 CRS
+```
+
+# 6.2 Transforming Raster Data
+
+## Average temperature
+
+```{r}
+ke_chirts_mean <- mean(ke_chirts)
+
+ke_chirts_mean
+```
+
+```{r}
+theme_set(theme_dhs_base())
+
+ggplot() +
+  layer_spatial(
+    mask(ke_chirts_mean, ke_borders),
+    alpha = 0.9
+  ) +
+  layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) +
+  labs(title = "Mean Temperature (°C)", subtitle = "Kenya, 2013", fill = "") +
+  scale_fill_chirts_c()
+```
+
+## Monthly aggregation
+
+```{r}
+# Average daily CHIRTS within months
+ke_chirts_mean_mnths <- tapp(
+  ke_chirts,
+  fun = mean,
+  index = "yearmonths"
+)
+
+ke_chirts_mean_mnths
+```
+
+```{r}
+months <- c("January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December")
+
+panels <- purrr::map2(
+  split_raster(ke_chirts_mean_mnths),
+  months,
+  function(r, m) {
+    chirts_panel_continuous(
+      r,
+      borders = ke_borders,
+      panel_title = m,
+      show_scale = FALSE,
+      fill_lab = "",
+      limits = c(7, 44)
+    )
+  }
+)
+
+patchwork::wrap_plots(panels) +
+  patchwork::plot_layout(guides = "collect", ncol = 6) +
+  patchwork::plot_annotation(
+    title = "Average Monthly Temperature (°C)",
+    subtitle = "Kenya, 2013",
+    caption = "Source: Climate Hazards Center"
+  )
+```
+
+## Temperature deviation
+
+```{r}
+# List all 12 monthly average files
+chirts_mnth_means <- list.files("data/chirts", full.names = TRUE)
+
+# Load monthly averages into a single raster stack
+chirts_norm <- rast(chirts_mnth_means)
+```
+
+```{r}
+# Subtract 2013 monthly average from 10-year monthly average
+chirts_dev <- ke_chirts_mean_mnths - chirts_norm
+
+chirts_dev
+```
+
+```{r}
+ggplot() +
+  layer_spatial(chirts_dev[[5]]) +
+  scale_fill_gradient2(
+    low = "#438b81",
+    mid = "#f0ebd7",
+    high = "#c25d33",
+    limits = c(-2, 2),
+    na.value = "transparent"
+  ) +
+  labs(
+    title = "Difference from 10-year average temperature (°C)",
+    subtitle = "May, 2013",
+    fill = ""
+  )
+```
+
+```{r}
+panels <- purrr::map2(
+  split_raster(chirts_dev),
+  months,
+  function(r, m) {
+    chirts_panel_diverging(
+      r,
+      borders = ke_borders,
+      panel_title = m,
+      show_scale = FALSE,
+      fill_lab = "",
+      low = "#438b81", mid = "#f0ebd7", high = "#c25d33",
+      limits = c(-2, 2),
+      na.value = "transparent"
+    )
+  }
+)
+
+patchwork::wrap_plots(panels) +
+  patchwork::plot_layout(guides = "collect", ncol = 6) +
+  patchwork::plot_annotation(
+    title = "Deviation from 10-Year Monthly Average (°C)",
+    subtitle = "Kenya, 2013",
+    caption = "Source: Climate Hazards Center"
+  )
+```
+
+## Spatial aggregation
+
+```{r}
+ke_mean_to_plot <- mask(ke_chirts_mean_mnths[[1]], ke_borders)
+
+ggplot() +
+  layer_spatial(ke_mean_to_plot, alpha = 0.9) +
+  layer_spatial(ke_borders, fill = NA, color = "#444444") +
+  layer_spatial(ke_buffer, fill = NA, color = alpha("black", 0.5)) +
+  labs(title = "Mean Temperature (°C)", subtitle = "January, 2013", fill = "") +
+  scale_fill_chirts_c()
+```
+
+## Zooming in
+
+```{r}
+# Select a single cluster to demonstrate
+clust1 <- ke_buffer |>
+  filter(DHSID == "KE201400001487")
+```
+
+```{r}
+ggplot() +
+  layer_spatial(crop(ke_chirts_mean_mnths[[1]], clust1, snap = "out")) +
+  layer_spatial(clust1, fill = NA, color = "black") +
+  labs(title = "Mean Temperature (°C)", subtitle = "Single Cluster", fill = "") +
+  scale_fill_chirts_c()
+```
+
+## Spatial aggregation
+
+```{r}
+extract(ke_chirts_mean_mnths[[1]], clust1)
+```
+
+```{r}
+extract(
+  ke_chirts_mean_mnths[[1]],
+  clust1,
+  weights = TRUE
+)
+```
+
+```{r}
+extract(
+  ke_chirts_mean_mnths[[1]],
+  clust1,
+  weights = TRUE,
+  fun = mean
+)
+```
+
+## Scaling up
+
+```{r}
+ke_chirts_clust <- extract(
+  ke_chirts_mean_mnths, # Extract values for each month of temperature data
+  ke_buffer,            # Use all cluster polygons
+  weights = TRUE,
+  fun = mean
+)
+```
+
+```{r}
+#| out.lines: 5
+# Update to use cluster IDs
+ke_chirts_clust$ID <- ke_buffer$DHSID
+
+ke_chirts_clust
+```
+
+# 7. Linking climate exposure to survey data
+
+# 7.1 Data source formats
+
+## Wide vs. long format
+
+```{r}
+ke_chirts_long <- ke_chirts_clust |>
+  pivot_longer(
+    cols = -ID, # Do not pivot the ID col
+    names_to = "CHIRTS_DATE", # Rename output columns
+    values_to = "MEAN_TEMP"
+  )
+
+ke_chirts_long
+```
+
+## Dates in DHS
+
+```{r}
+#| out.lines: 5
+ke_dhs$KIDDOBCMC
+```
+
+## Dates in CHIRTS
+
+```{r}
+#| out.lines: 5
+ke_chirts_long$CHIRTS_DATE
+```
+
+## Converting Dates
+
+```{r}
+ipums_var_desc(ke_ddi, "KIDDOBCMC")
+```
+
+```{r}
+# Replace "ym_" with ""
+ke_chirts_long <- ke_chirts_long |>
+  mutate(CHIRTS_DATE = str_replace(CHIRTS_DATE, "ym_", ""))
+
+ke_chirts_long
+```
+
+```{r}
+ke_chirts_long <- ke_chirts_long |>
+  mutate(CHIRTS_DATE = ym(CHIRTS_DATE))
+
+ke_chirts_long
+```
+
+```{r}
+ke_chirts_long <- ke_chirts_long |>
+  mutate(CHIRTS_DATE = (year(CHIRTS_DATE) - 1900) * 12 + month(CHIRTS_DATE))
+
+ke_chirts_long
+```
+
+## Workflow note
+
+```{r}
+#| eval: false
+ke_chirts_long <- ke_chirts_clust |>
+  pivot_longer(
+    cols = -ID,
+    names_to = "CHIRTS_DATE",
+    values_to = "MEAN_TEMP"
+  ) |>
+  mutate(
+    CHIRTS_DATE = str_replace(CHIRTS_DATE, "ym_", ""),
+    CHIRTS_DATE = ym(CHIRTS_DATE),
+    CHIRTS_DATE = (year(CHIRTS_DATE) - 1900) * 12 + month(CHIRTS_DATE)
+  )
+```
+
+# 7.2 Joining data sources
+
+## What we have at this point
+
+```{r}
+# Cluster-level monthly CHIRTS data
+ke_chirts_long
+```
+
+```{r}
+# Child-level tabular DHS survey data
+ke_dhs[, c("DHSID", "KIDID", "KIDDOBCMC", "BIRTHWT")]
+```
+
+## Joining climate and DHS data
+
+```{r}
+#| error: true
+inner_join(
+  ke_dhs,
+  ke_chirts_long
+)
+```
+
+```{r}
+ke_dhs_chirts <- inner_join(
+  ke_dhs,
+  ke_chirts_long,
+  by = c("DHSID" = "ID", "KIDDOBCMC" = "CHIRTS_DATE")
+)
+```
+
+```{r}
+# Each child is now associated with monthly average temperature for their
+# birth month
+ke_dhs_chirts |>
+  select(DHSID, KIDID, KIDDOBCMC, MEAN_TEMP, BIRTHWT)
+```
+
+## Exploring our joined dataset
+
+```{r}
+ggplot(ke_dhs_chirts) +
+  geom_point(aes(x = MEAN_TEMP, y = BIRTHWT), alpha = 0.5, size = 2)
+```
