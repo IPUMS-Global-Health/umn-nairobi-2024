@@ -64,6 +64,29 @@ chirts_panel_continuous <- function(x,
     )
 }
 
+chirts_panel_diverging <- function(x,
+                                   borders,
+                                   panel_title = "",
+                                   show_scale = TRUE,
+                                   fill_lab = "",
+                                   ...) {
+  x_mask <- mask(x, borders, inverse = FALSE)
+  
+  ggplot() + 
+    layer_spatial(x_mask, alpha = 0.9, na.rm = TRUE) +
+    # layer_spatial(borders, fill = NA, color = "#eeeeee") +
+    layer_spatial(borders, fill = NA, color = "#7f7f7f") +
+    labs(subtitle = panel_title, fill = fill_lab) +
+    scale_fill_gradient2(...) +
+    theme_dhs_map(show_scale = show_scale) +
+    theme(
+      axis.text.x = element_blank(), 
+      axis.text.y = element_blank(),
+      plot.subtitle = element_text(hjust = 0.5, size = 12),
+      panel.grid = element_blank()
+    )
+}
+
 # Helper to split raster layers into a list for small-multiple panel mapping
 split_raster <- function(r) {
   purrr::map(seq_len(nlyr(r)), function(i) r[[i]])
