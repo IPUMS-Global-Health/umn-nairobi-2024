@@ -1,97 +1,4 @@
-# Add map scale bar and update guides
-theme_dhs_map <- function(show_scale = TRUE, continuous = TRUE) {
-  if (show_scale) {
-    scale <- annotation_scale(
-      aes(style = "ticks", location = "br"), 
-      text_col = "#999999",
-      line_col = "#999999",
-      height = unit(0.2, "cm")
-    )
-  } else {
-    scale <- NULL
-  }
-  
-  if (continuous) {
-    guide <- guides(
-      fill = guide_colorbar(draw.llim = FALSE, draw.ulim = FALSE)
-    )
-  } else {
-    guide <- guides(
-      fill = guide_colorsteps(draw.llim = FALSE, draw.ulim = FALSE)
-    )
-  }
-  
-  list(scale, guide)
-}
-
-# Define custom palette functions so we can easily reproduce
-# color schemes across our maps in this post
-chirts_palettes <- function() {
-  list(
-    main = c("#bad3e8", "#ffd3a3", "#da5831", "#872e38"),
-    diff = c("#5B3794", "#8F4D9F", "#B76AA8", "#D78CB1", "#F1B1BE", "#F8DCD9")
-  )
-}
-
-# ggplot2 layer for continuous scale for selected palette
-scale_fill_chirts_c <- function(na.value = NA, ...) {
-  pal <- colorRampPalette(c("#bad3e8", "#ffd3a3", "#da5831", "#872e38"))
-  ggplot2::scale_fill_gradientn(colors = pal(256), na.value = na.value, ...)
-}
-
-# Function to build individual panels for a small-multiple map using 
-# continuous color scheme
-chirts_panel_continuous <- function(x,
-                                    borders,
-                                    panel_title = "",
-                                    show_scale = TRUE,
-                                    fill_lab = "",
-                                    ...) {
-  x_mask <- mask(x, borders, inverse = FALSE)
-  
-  ggplot() + 
-    layer_spatial(x_mask, alpha = 0.9, na.rm = TRUE) +
-    # layer_spatial(borders, fill = NA, color = "#eeeeee") +
-    layer_spatial(borders, fill = NA, color = "#7f7f7f") +
-    labs(subtitle = panel_title, fill = fill_lab) +
-    scale_fill_chirts_c(...) +
-    theme_dhs_map(show_scale = show_scale) +
-    theme(
-      axis.text.x = element_blank(), 
-      axis.text.y = element_blank(),
-      plot.subtitle = element_text(hjust = 0.5, size = 12),
-      panel.grid = element_blank()
-    )
-}
-
-chirts_panel_diverging <- function(x,
-                                   borders,
-                                   panel_title = "",
-                                   show_scale = TRUE,
-                                   fill_lab = "",
-                                   ...) {
-  x_mask <- mask(x, borders, inverse = FALSE)
-  
-  ggplot() + 
-    layer_spatial(x_mask, alpha = 0.9, na.rm = TRUE) +
-    # layer_spatial(borders, fill = NA, color = "#eeeeee") +
-    layer_spatial(borders, fill = NA, color = "#7f7f7f") +
-    labs(subtitle = panel_title, fill = fill_lab) +
-    scale_fill_gradient2(...) +
-    theme_dhs_map(show_scale = show_scale) +
-    theme(
-      axis.text.x = element_blank(), 
-      axis.text.y = element_blank(),
-      plot.subtitle = element_text(hjust = 0.5, size = 12),
-      panel.grid = element_blank()
-    )
-}
-
-# Helper to split raster layers into a list for small-multiple panel mapping
-split_raster <- function(r) {
-  purrr::map(seq_len(nlyr(r)), function(i) r[[i]])
-}
-
+# Base theme elements
 theme_dhs_base <- function() {
   ggplot2::`%+replace%`(
     ggplot2::theme_minimal(),
@@ -132,4 +39,92 @@ theme_dhs_base <- function() {
       )
     )
   )
+}
+
+
+# Add map scale bar and update guides
+theme_dhs_map <- function(show_scale = TRUE, continuous = TRUE) {
+  if (show_scale) {
+    scale <- annotation_scale(
+      aes(style = "ticks", location = "br"), 
+      text_col = "#999999",
+      line_col = "#999999",
+      height = unit(0.2, "cm")
+    )
+  } else {
+    scale <- NULL
+  }
+  
+  if (continuous) {
+    guide <- guides(
+      fill = guide_colorbar(draw.llim = FALSE, draw.ulim = FALSE)
+    )
+  } else {
+    guide <- guides(
+      fill = guide_colorsteps(draw.llim = FALSE, draw.ulim = FALSE)
+    )
+  }
+  
+  list(scale, guide)
+}
+
+# ggplot2 layer for continuous scale for selected palette
+scale_fill_chirts_c <- function(na.value = NA, ...) {
+  pal <- colorRampPalette(c("#bad3e8", "#ffd3a3", "#da5831", "#872e38"))
+  ggplot2::scale_fill_gradientn(colors = pal(256), na.value = na.value, ...)
+}
+
+# Function to build individual panels for a small-multiple map using 
+# continuous color scheme
+chirts_panel_continuous <- function(x,
+                                    borders,
+                                    panel_title = "",
+                                    show_scale = TRUE,
+                                    fill_lab = "",
+                                    ...) {
+  x_mask <- mask(x, borders, inverse = FALSE)
+  
+  ggplot() + 
+    layer_spatial(x_mask, alpha = 0.9, na.rm = TRUE) +
+    # layer_spatial(borders, fill = NA, color = "#eeeeee") +
+    layer_spatial(borders, fill = NA, color = "#7f7f7f") +
+    labs(subtitle = panel_title, fill = fill_lab) +
+    scale_fill_chirts_c(...) +
+    theme_dhs_map(show_scale = show_scale) +
+    theme(
+      axis.text.x = element_blank(), 
+      axis.text.y = element_blank(),
+      plot.subtitle = element_text(hjust = 0.5, size = 12),
+      panel.grid = element_blank()
+    )
+}
+
+# Function to build individual panels for a small-multiple map using 
+# diverging color scheme
+chirts_panel_diverging <- function(x,
+                                   borders,
+                                   panel_title = "",
+                                   show_scale = TRUE,
+                                   fill_lab = "",
+                                   ...) {
+  x_mask <- mask(x, borders, inverse = FALSE)
+  
+  ggplot() + 
+    layer_spatial(x_mask, alpha = 0.9, na.rm = TRUE) +
+    # layer_spatial(borders, fill = NA, color = "#eeeeee") +
+    layer_spatial(borders, fill = NA, color = "#7f7f7f") +
+    labs(subtitle = panel_title, fill = fill_lab) +
+    scale_fill_gradient2(...) +
+    theme_dhs_map(show_scale = show_scale) +
+    theme(
+      axis.text.x = element_blank(), 
+      axis.text.y = element_blank(),
+      plot.subtitle = element_text(hjust = 0.5, size = 12),
+      panel.grid = element_blank()
+    )
+}
+
+# Helper to split raster layers into a list for small-multiple panel mapping
+split_raster <- function(r) {
+  purrr::map(seq_len(nlyr(r)), function(i) r[[i]])
 }

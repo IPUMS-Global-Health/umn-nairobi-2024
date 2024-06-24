@@ -1,4 +1,3 @@
-
 library(sf)
 library(terra)
 
@@ -39,7 +38,7 @@ purrr::walk(
     
     writeRaster(
       monthly_mean, 
-      file.path("~/Documents/projects/umn-nairobi-2024/data/chirts", file),
+      file.path(here::here("data/chirts"), file),
       overwrite = TRUE
     )
   }

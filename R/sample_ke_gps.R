@@ -14,7 +14,7 @@ library(dplyr)
 set.seed(134)
 
 # 2022 KE boundary shapfile from DHS
-ke_bnds <- st_read("data/local/sdr_subnational_boundaries_2024-06-20/shps/sdr_subnational_boundaries2.shp") |> 
+ke_bnds <- st_read("data/ke_boundaries/sdr_subnational_boundaries2.shp") |> 
   st_make_valid() |> 
   # st_union() |> 
   st_simplify(dTolerance = 100)

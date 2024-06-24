@@ -51,7 +51,7 @@ knitr::knit_hooks$set(output = function(x, options) {
   hook_output(x, options)
 })
 
-source("utils/utils.R")
+source("R/utils.R")
 
 # Load fonts
 # sysfonts::font_add(
