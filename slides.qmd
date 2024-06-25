@@ -185,7 +185,7 @@ materials](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/tree/main?tab
 -   Why use R?
 
     -   Reproducibility + automation
-    -   Advanced statistics
+    -   **Advanced statistics**
     -   Visualization
     -   **Spatial data**
     -   Advanced documentation (websites, presentations, and more)
@@ -224,7 +224,7 @@ This should also include things about how to use the materials (e.g. slides_code
 Everyone should now have the necessary packages installed.
 
 ::: {.fragment .fade-in}
-We can load them by running the following code in the R Console:
+We can load them by running the following code chunk in `slides_code.Rmd`
 
 ```{r}
 library(dplyr)
@@ -390,16 +390,17 @@ ipums_var_info(ke_dhs)
 ::: {.fragment .fade-in}
 ```{r}
 #| eval: false
-ipums_var_desc(ke_dhs$BIRTHWT)
-#> [1] "For children born in the three to five years before the survey,
-#> BIRTHWT (M19) reports the child's birthweight in kilos with three implied
-#> decimal places (or, alternatively stated, in grams with no decimal places).
-#> Children who were not weighed are coded 9996."
+ipums_var_desc(ke_dhs$HEIGHTFEM)
+#> [1] "HEIGHTFEM (V438) reports the woman's height as measured by DHS 
+#> personnel. HEIGHTFEM values are reported in millimeters, to preserve one 
+#> centimeter decimal place without requiring the use of a decimal point. 
+#> Dividing HEIGHTFEM by 10 will yield the woman's measured height in 
+#> centimeters."
 ```
 :::
 
--   In this case, we will need to adjust the decimal places and remove
-    missing values (later!)
+-   In this case, we will need to adjust the decimal places and possibly
+    remove missing values
 
 ## Exploring DHS metadata
 
@@ -424,9 +425,56 @@ ipums_val_labels(ke_dhs$RELIGION)
 
 ::: {.fragment .fade-in}
 ```{r}
-ipums_val_labels(ke_dhs$BIRTHWT)
+ipums_val_labels(ke_dhs$HEIGHTFEM)
 ```
 :::
+
+
+## Visualizing our sample
+
+::: nonincremental
+::: {.fragment .fade-in fragment-index="1"}
+-   Plotting data can help to identify preliminary patterns
+:::
+
+::: {.fragment .fade-in fragment-index="2"}
+-   We will use `ggplot2()` to create plots that are linked to our data
+:::
+
+::: {.fragment .fade-in fragment-index="3"}
+-   `ggplot2()` could be the source of an entire workshop by itself.
+
+    -   If we have time, we can cover it during our demos
+    -   But it will not be our main focus today
+:::
+
+::: {.fragment .fade-in fragment-index="2"}
+![](images/hex/ggplot2.png){.absolute right="10" bottom="50"
+height="150"}
+:::
+:::
+
+## Visualizing our sample
+
+-   Make a ggplot based on your data with `ggplot()`
+
+-   Add different visual layers (`geom_`) with `+`
+
+-   For instance, here is a histogram of our `BIRTHWT` values:
+
+::: {.fragment .fade-in}
+```{r}
+#| fig-height: 4
+ggplot(ke_dhs) +
+  geom_histogram(aes(x = BIRTHWT))
+```
+:::
+
+## Visualizing our sample
+
+-   Obviously there is an unexpected pattern in our data!
+
+-   We will dig into this in our exercises
 
 # R Demo
 
@@ -514,6 +562,18 @@ ke_dhs$BIRTHWT[1:5]
 :::
 
 ![](images/hex/dplyr.png){.absolute right="10" bottom="50" height="150"}
+
+## Revisiting our histogram
+
+-   Now our `BIRTHWT` distribution looks a little more reasonable
+
+:::{.fragment .fade-in}
+```{r}
+#| fig-height: 4
+ggplot(ke_dhs) +
+  geom_histogram(aes(x = BIRTHWT), bins = 70)
+```
+:::
 
 ## Cleaning DHS data
 
@@ -752,55 +812,6 @@ ke_dhs <- ke_dhs |>
 ```
 :::
 
-## Visualizing our sample
-
-::: nonincremental
-::: {.fragment .fade-in fragment-index="1"}
--   It can also be useful to visualize variables to identify unreliable
-    data
-:::
-
-::: {.fragment .fade-in fragment-index="2"}
--   We will use `ggplot2()` to create plots that are linked to our data
-:::
-
-::: {.fragment .fade-in fragment-index="3"}
--   `ggplot2()` could be the source of an entire workshop by itself.
-
-    -   If we have time, we can cover it during our demos
-    -   But it will not be our main focus today
-:::
-
-::: {.fragment .fade-in fragment-index="2"}
-![](images/hex/ggplot2.png){.absolute right="10" bottom="50"
-height="150"}
-:::
-:::
-
-## Visualizing our sample
-
--   Make a ggplot based on your data with `ggplot()`
-
--   Add different visual layers (`geom_`) with `+`
-
--   For instance, here is a histogram of our `BIRTHWT` values:
-
-::: {.fragment .fade-in}
-```{r}
-#| fig-height: 4
-ggplot(ke_dhs) +
-  geom_histogram(aes(x = BIRTHWT), bins = 70)
-```
-:::
-
-## Visualizing our sample
-
--   It looks like lots of `BIRTHWT`values cluster at certain points
-
--   We should investigate to determine whether these values are reliable
-
--   For this workshop, we are not going to worry about this, though!
-
 ## Data types {auto-animate="true"}
 
 ::: {.fragment .fade-in}
@@ -952,24 +963,6 @@ ke_gps
 
 -   Cluster locations are represented by `POINT` geometries
 
-# R demo
-
-Working with vector data 📍
-
-::: notes
-Contents? - I guess some dplyr stuff - Filter, select, mutate - Some
-spatial calculations? - Distances...hm lots of things may need
-projections - Intersections... - Spatial joins...this might be good
-cause we have points + polygon sources
-
-Should have some test activities for people to try to do? E.g. Could
-some of these things be things people need to do some research on? -
-E.g. just set aside 20 min and people can do some research to try to
-find solutions to a few questions? - E.g. Find the top 10 counties with
-an area greater than \_\_\_\_ - Find all counties that border a given
-county, etc.
-:::
-
 # Questions?
 
 ## Mapping
@@ -1092,7 +1085,7 @@ ggplot() +
 
 # R Demo
 
-Mapping with ggspatial 🗺️
+Vector data and ggspatial 🗺️
 
 ::: notes
 Demo contents? - Probably mostly ggplot2 stuff... - aesthetics of

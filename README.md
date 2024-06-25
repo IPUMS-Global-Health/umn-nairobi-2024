@@ -110,7 +110,8 @@ Copy the following code into the `Console` in RStudio, then press
 
 ``` r
 # Install necessary packages if not already installed 
-pkgs <- c("tidyverse", "ipumsr", "sf", "terra", "ggspatial", "lme4")
+pkgs <- c("tidyverse", "ipumsr", "sf", "terra", 
+          "ggspatial", "patchwork", "lubridate", "lme4")
 
 for (pkg in pkgs) {
   if (!require(pkg, quietly = TRUE, character.only = TRUE)) {

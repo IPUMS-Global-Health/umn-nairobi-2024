@@ -86,7 +86,7 @@ ipums_var_info(ke_dhs)
 ```
 
 ```{r}
-ipums_var_desc(ke_dhs$BIRTHWT)
+ipums_var_desc(ke_dhs$HEIGHTFEM)
 ```
 
 ```{r}
@@ -94,7 +94,14 @@ ipums_val_labels(ke_dhs$RELIGION)
 ```
 
 ```{r}
-ipums_val_labels(ke_dhs$BIRTHWT)
+ipums_val_labels(ke_dhs$HEIGHTFEM)
+```
+
+## Visualizing our sample
+
+```{r}
+ggplot(ke_dhs) +
+  geom_histogram(aes(x = BIRTHWT))
 ```
 
 ## Cleaning DHS data
@@ -121,6 +128,15 @@ ke_dhs <- ke_dhs |>
 
 ke_dhs$BIRTHWT[1:5]
 ```
+
+## Revisiting our histogram
+
+```{r}
+ggplot(ke_dhs) +
+  geom_histogram(aes(x = BIRTHWT), bins = 70)
+```
+
+## Cleaning DHS data
 
 ```{r}
 ke_dhs <- ke_dhs |>
@@ -155,8 +171,6 @@ ke_dhs <- ke_dhs |>
     )
   )
 ```
-
-Note: this is not displayed in slides but should be run in demo...demo code to be included in this file?
 
 ```{r}
 ke_dhs <- ke_dhs |> 
@@ -214,14 +228,6 @@ ke_dhs$RESIDENT
 ```{r}
 ke_dhs <- ke_dhs |>
   filter(!is.na(BIRTHWT))
-```
-
-## Visualizing our sample
-
-```{r}
-#| fig-height: 4
-ggplot(ke_dhs) +
-  geom_histogram(aes(x = BIRTHWT), bins = 70)
 ```
 
 ## Data types
