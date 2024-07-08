@@ -13,9 +13,10 @@ that will be used in the workshop.
 
 Below we describe some setup work that can be completed before the
 workshop itself. Please follow the instructions in advance of the
-workshop. The day before the workshop (July 1) we will be available to
-assist in some of these steps, but they can also be completed on your
-own.
+workshop. If you have trouble, we may be able to use some time at the
+beginning of the workshop to assist in some of these steps. However,
+some steps (i.e. registering for access to IPUMS DHS) require some
+waiting time, so it will be best if you can complete them in advance.
 
 All data and software used in the workshop are available free of charge.
 
@@ -29,7 +30,7 @@ data access through the DHS Program itself.
 
 Once you have a valid DHS account, you can [log into IPUMS
 DHS](https://www.idhsdata.org/idhs-action/users/login) using your DHS
-username and password. :key:
+username and password. 🔑
 
 ### 2. Build an IPUMS DHS extract
 
@@ -43,19 +44,19 @@ on building an IPUMS DHS data extract.
 
 1.  To reproduce the data used in this workshop, select the following
     samples and variables:
-    - **Sample:** Kenya 2014 :kenya:
+    - **Sample:** Kenya 2014 🇰🇪
     - **Variables:**
-      - [`BIRTHWT`](https://idhsdata.org/idhs-action/variables/BIRTHWT)
-      - [`HEIGHTFEM`](https://idhsdata.org/idhs-action/variables/HEIGHTFEM)
-      - [`KIDSEX`](https://idhsdata.org/idhs-action/variables/KIDSEX)
-      - [`KIDDOBCMC`](https://idhsdata.org/idhs-action/variables/KIDDOBCMC)
-      - [`BIRTHWTREF`](https://idhsdata.org/idhs-action/variables/BIRTHWTREF)
-      - [`FLOOR`](https://idhsdata.org/idhs-action/variables/FLOOR)
-      - [`TOILETTYPE`](https://idhsdata.org/idhs-action/variables/TOILETTYPE)
-      - [`DRINKWTR`](https://idhsdata.org/idhs-action/variables/DRINKWTR)
-      - [`HWHAZWHO`](https://idhsdata.org/idhs-action/variables/HWHAZWHO)
-      - [`FEVRECENT`](https://idhsdata.org/idhs-action/variables/FEVRECENT)
-      - [`DIARRECENT`](https://idhsdata.org/idhs-action/variables/DIARRECENT)
+      - [`BIRTHWT`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWT%22)%60)
+      - [`HEIGHTFEM`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22HEIGHTFEM%22)%60)
+      - [`KIDSEX`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDSEX%22)%60)
+      - [`KIDDOBCMC`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22KIDDOBCMC%22)%60)
+      - [`BIRTHWTREF`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22BIRTHWTREF%22)%60)
+      - [`FLOOR`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22FLOOR%22)%60)
+      - [`TOILETTYPE`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22TOILETTYPE%22)%60)
+      - [`DRINKWTR`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22DRINKWTR%22)%60)
+      - [`HWHAZWHO`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22HWHAZWHO%22)%60)
+      - [`FEVRECENT`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22FEVRECENT%22)%60)
+      - [`DIARRECENT`](%60r%20ipumsr::ipums_website(%22dhs%22,%20launch%20=%20FALSE,%20var%20=%20%22DIARRECENT%22)%60)
 2.  Submit your extract request through the IPUMS DHS interface.
 3.  When the it has finished processing,
     [download](https://tech.popdata.org/dhs-research-hub/posts/2024-02-02-download-dhs-data/#download-data)
@@ -80,28 +81,25 @@ If you *do not* already have R and RStudio installed:
 
 There are 2 options for downloading the files used in this workshop:
 
-1.  *If you’re comfortable with Git*, run the following code in your
-    terminal to clone this repository into the local directory of your
-    choice:
+1.  [Download](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/archive/refs/heads/main.zip)
+    the workshop files manually
+    - 📂 Open the downloaded zip file
+    - 🚨 **Windows users** may also need to download decompression
+      software (e.g. [7-Zip](https://www.7-zip.org/)) to decompress the
+      zip file.
+2.  Otherwise, *if you’re comfortable with Git*, run the following code
+    in your terminal to clone this repository into the local directory
+    of your choice:
 
 <!-- -->
 
     git clone https://github.com/IPUMS-Global-Health/umn-nairobi-2024.git
 
-2.  *Otherwise*, you can
-    [download](https://github.com/IPUMS-Global-Health/umn-nairobi-2024/archive/refs/heads/main.zip)
-    the workshop files manually
-    - :open_file_folder: Open the downloaded zip file
-    - :rotating_light: **Windows users** may also need to download
-      decompression software (e.g. [7-Zip](https://www.7-zip.org/)) to
-      decompress the zip file.
-
 ### 5. Launch the workshop’s RStudio Project
 
 Open the file `umn-nairobi-2024.Rproj` found in this project folder.
 
-This will launch the workshop project in a new RStudio environment.
-:rocket:
+This will launch the workshop project in a new RStudio environment. 🚀
 
 ### 6. Install necessary R packages
 
@@ -121,7 +119,7 @@ for (pkg in pkgs) {
 ```
 
 It may take a few minutes to install the packages needed for this
-workshop :hourglass:
+workshop ⌛
 
 - If prompted to update dependency packages, please do so by pressing
   `1`.
