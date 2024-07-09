@@ -132,7 +132,7 @@ ggplot(ke_dhs) +
 
 # Exercises --------------------------------------------------------------------
 
-# 1. ----------
+# 2.1 ----------
 
 # In the slides we showed the distribution of BIRTHWT:
 ggplot(ke_dhs) +
@@ -141,14 +141,17 @@ ggplot(ke_dhs) +
 # Use the IPUMS metadata to identify why we have so many large values for this
 # variable.
 
-# 2. ----------
+# 2.2 ----------
 
 # Above, we made the following plot.
 # How can we modify the code to produce a plot where the bars run horizontally?
+#
+# Hint: look at the documentation for `geom_bar()` by running `?geom_bar()`.
+# `?aes_position` may also be useful.
 ggplot(ke_dhs) +
   geom_bar(aes(x = WEALTHQ))
 
-# 3. ----------
+# 2.3 ----------
 
 # Why does this plot produce bars that are filled with red, not blue?
 ggplot(ke_dhs) +
@@ -158,11 +161,11 @@ ggplot(ke_dhs) +
 ggplot(ke_dhs) +
   geom_bar(aes(x = WEALTHQ), fill = "blue")
 
-# 4. ---------
+# 2.4 ---------
 
 # See if you can create a bar plot (`geom_bar()`) that shows the count of 
-# observations in each WEALTHQ, but grouped by KIDSEX. There are multiple ways
-# to do this!
+# observations in each WEALTHQ, but colored by KIDSEX. There are multiple ways
+# to do this—feel free to explore the ggplot2 documentation!
 
 # 5. ---------
 

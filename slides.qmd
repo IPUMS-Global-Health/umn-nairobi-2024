@@ -1194,8 +1194,7 @@ ke_chirts <- get_chirts(
 #| echo: false
 ke_chirts <- rast("data/ke_chirts_2013.nc") # Our pre-saved CHIRTS NetCDF
 
-m <- matrix(c(-9999, NA), nrow = 1)
-ke_chirts <- classify(ke_chirts, m)
+ke_chirts <- subst(ke_chirts, -9999, NA)
 
 plot(ke_chirts[[1]])
 ```
@@ -1376,8 +1375,7 @@ time(ke_chirts)
 ```{r}
 #| eval: false
 # Reclassify missing values
-m <- matrix(c(-9999, NA), nrow = 1)
-ke_chirts <- classify(ke_chirts, m)
+ke_chirts <- subst(ke_chirts, -9999, NA)
 ```
 :::
 
@@ -1389,10 +1387,9 @@ ke_chirts <- classify(ke_chirts, m)
 
 ```{r}
 #| eval: false
-#| code-line-numbers: "|6|7"
+#| code-line-numbers: "|5|6"
 # Reclassify missing values
-m <- matrix(c(-9999, NA), nrow = 1)
-ke_chirts <- classify(ke_chirts, m)
+ke_chirts <- subst(ke_chirts, -9999, NA)
 
 ggplot() +
   layer_spatial(ke_chirts[[1]], alpha = 0.9) +
@@ -1409,8 +1406,7 @@ ggplot() +
 #| echo: false
 #| fig-align: center
 # Reclassify missing values
-m <- matrix(c(-9999, NA), nrow = 1)
-ke_chirts <- classify(ke_chirts, m)
+ke_chirts <- subst(ke_chirts, -9999, NA)
 
 ggplot() +
   layer_spatial(ke_chirts[[1]], alpha = 0.9) +
@@ -1677,12 +1673,7 @@ ke_buffer <- st_transform(ke_buffer, crs = 4326) # WGS 84 CRS
 
 # R Demo
 
-Vector aggregation 🌍
-
-::: notes
-have people plot maps with different UTM coordinates to see how it
-changes the projection visually
-:::
+Projections 🌍
 
 # Questions?
 
@@ -1770,100 +1761,6 @@ ggplot() +
   scale_fill_chirts_c()
 ```
 :::
-
-<!-- ## 2. Count of hot days -->
-
-<!-- -   Another option: days above a threshold temperature -->
-
-<!-- -   We can apply operations to all of our raster cells at once: -->
-
-<!-- ::: {.fragment .fade-in} -->
-
-<!-- ```{r} -->
-
-<!-- # Get a binary indicator of whether each cell is above 35 degrees -->
-
-<!-- ke_bin <- ke_chirts > 35 -->
-
-<!-- ``` -->
-
-<!-- ::: -->
-
-<!-- ## 2. Count of hot days -->
-
-<!-- :::{.nonincremental} -->
-
-<!-- -   Another option: days above a threshold temperature -->
-
-<!-- -   We can do simple operations to all of our raster cells at once: -->
-
-<!-- ::: -->
-
-<!-- ```{r} -->
-
-<!-- #| echo: false -->
-
-<!-- #| fig-align: center -->
-
-<!-- # Get a binary indicator of whether each cell is above -->
-
-<!-- ggplot() + -->
-
-<!--   layer_spatial( -->
-
-<!--     mask(ke_bin[[1]], ke_borders), -->
-
-<!--     alpha = 0.9 -->
-
-<!--   ) + -->
-
-<!--   layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) + -->
-
-<!--   labs(title = "Areas above 35°C", subtitle = "January 1, 2013", fill = "") + -->
-
-<!--   scale_fill_manual(values = c("#d6d6d6", "#872e38"), na.translate = FALSE) -->
-
-<!-- ``` -->
-
-<!-- ## 2. Count of hot days -->
-
-<!-- -   Now we can sum to count the number of days above 35 degrees -->
-
-<!-- :::{.fragment .fade-in} -->
-
-<!-- ```{r} -->
-
-<!-- ke_count_above_35 <- sum(ke_bin) -->
-
-<!-- ``` -->
-
-<!-- ::: -->
-
-<!-- ## 2. Count of hot days -->
-
-<!-- :::{.nonincremental} -->
-
-<!-- -   Now we can count the number of days above 35 degrees by summing: -->
-
-<!-- ::: -->
-
-<!-- ```{r} -->
-
-<!-- #| echo: false -->
-
-<!-- #| fig-align: center -->
-
-<!-- ggplot() + -->
-
-<!--   layer_spatial(mask(ke_count_above_35, ke_borders), alpha = 0.9) + -->
-
-<!--   layer_spatial(ke_borders, fill = NA, color = "#444444") + -->
-
-<!--   labs(title = "Number of days above 35°C", subtitle = "Kenya, 2013", fill = "") + -->
-
-<!--   scale_fill_chirts_c() -->
-
-<!-- ``` -->
 
 ## Monthly aggregation
 
@@ -2354,10 +2251,6 @@ ke_chirts_clust
 # R Demo
 
 Raster aggregation 🌍
-
-::: notes
-A heatwave definition/more complex temporal agg
-:::
 
 # Questions?
 

@@ -1,4 +1,4 @@
-# Working with vector data
+# Vector data and ggspatial
 
 library(sf)
 library(ggspatial)
@@ -12,7 +12,8 @@ ke_gps <- st_read("data/ke_gps.shp", quiet = TRUE)
 ke_borders <- st_read(
   "data/ke_boundaries/sdr_subnational_boundaries2.shp", 
   quiet = TRUE
-)
+) |> 
+  st_make_valid() # For joining later
 
 # Working with attributes ------------------------------------------------------
 
@@ -71,14 +72,39 @@ plot(joined[, 1])
 
 # Exercises --------------------------------------------------------------------
 
-# 1. Identify the 5 KE regions with the most DHS clusters
+# 4.1 ---------
 
-# 2. Identify the 5 KE regions with the largest area-to-perimeter ratio
+# Using the `DHSREGNA` variable in our DHS cluster point data, identify the
+# 5 KE regions with the most DHS clusters
 
-# 3. Find the DHS cluster that is furthest from the Kenyan national border
-#    You will need to first combine border polygons as demonstrated above.
-#    I have converted the polygons to linestring geometries for you:
+# 4.2 ---------
 
-ke_borders <- st_cast(ke_borders, to = "MULTILINESTRING")
+# Using the `DHSREGEN` variable in our Kenya administrative boundaries file,
+# identify the 5 KE regions with the largest area-to-perimeter ratio
 
+# Bonus: make a map where each administrative region is colored by its
+# area-to-perimeter ratio. (Hint: you may need to convert your calculated
+# area-to-perimeter to a number with `as.numeric()`)
 
+# 4.3 ---------
+
+# Find the DHS cluster that is furthest from the Kenyan national border
+#
+# You will need to use the dissolved national border file from the demo to
+# do so. I've converted it from a polygon to a linestring object for you.
+#
+# Bonus: make a map where each DHS cluster point is colored by its distance
+# to the national border
+
+ke_national_border <- st_union(ke_borders)
+ke_borders_lines <- st_cast(ke_national_border, to = "MULTILINESTRING")
+
+# 4.4 ----------
+
+# Identify the 5 Kenya administrative regions with the highest density
+# of DHS clusters. That is, which regions have the most clusters per unit
+# of area? Use the `DHSREGEN` variable in the boundary file to identify
+# regions.
+#
+# Hint: this will require joining cluster points with the administrative
+# boundary file as shown in the demo.

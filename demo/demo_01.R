@@ -219,7 +219,7 @@ ipums_data_collections()
 
 # Exercises --------------------------------------------------------------------
 
-# 1. --------
+# 1.1 --------
 
 # What will this return? What does this tell you about order of operations in R?
 2 + 2 < 3
@@ -227,26 +227,26 @@ ipums_data_collections()
 # If we modify the code as follows, what do you expect the output to be? Why?
 2 + (2 < 3)
 
-# 2. --------
+# 1.2 --------
 
 # Why are we unable to compute this mean? 
 # How can we modify the code to produce a valid value?
 x <- c(1, 4, 3, NA, 2, 4)
 mean(x)
 
-# 3. --------
+# 1.3 --------
 
-# What's the problem here?
+# What's the problem with the following code?
 x <- c(1, 3, 5)
 mean("x")
 
-# 4. --------
+# 1.4 --------
 
 # What will the following code produce? Why?
 v <- c("A", 1, 2)
 v[2] + v[3]
 
-# 5. --------
+# 1.5 --------
 
 # Write code to extract all the elements greater than 12 from the vector `x`:
 x <- seq(1, 20, by = 2)

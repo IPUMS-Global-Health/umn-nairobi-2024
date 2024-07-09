@@ -33,27 +33,27 @@ ke_dhs |>
 
 # Exercises --------------------------------------------------------------------
 
-# 1. ---------
+# 3.1 ---------
 
 # The BIRTHWT histogram we showed in the slides had some frequent values
 # Summarize the ke_dhs data to see which values were more common.
 # What are the most common BIRTHWT values?
 # Are there any other variables with similar patterns?
 
-# 2. ---------
+# 3.2 ---------
 
 # Our IVs will be FLOOR, TOILETTYPE, DRINKWTR, FEVRECENT, DIARRECENT
-
+# 
 # Identify whether these variables may need any modifications before being
 # used.
-
+#
 # Some useful tools:
-## Basic R (unique(), range(), etc.)
-## ipumsr metadata functions (e.g. ipums_var_info(), ipums_val_labels(), ipums_var_desc())
-## dplyr functions (e.g. summarize(), count())
-## ggplot2
+# - Basic R (unique(), range(), etc.)
+# - ipumsr metadata functions (e.g. ipums_var_info(), ipums_val_labels(), ipums_var_desc())
+# - dplyr functions (e.g. summarize(), count())
+# - ggplot2
 
-# 3. ---------
+# 3.3 ---------
 
-# If any of the above variables need additional cleaning, write code
-# to prepare the variables accordingly
+# If any of the above variables need additional cleaning, try to write some code
+# to prepare the variables accordingly.

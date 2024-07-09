@@ -1942,8 +1942,7 @@
 <div class="fragment fade-in">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb54-1" class="hljs-ln-code"><a href=""></a><span class="co"># Reclassify missing values</span></span>
-<span id="cb54-2" class="hljs-ln-code"><a href=""></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">9999</span>, <span class="cn">NA</span>), <span class="at">nrow =</span> <span class="dv">1</span>)</span>
-<span id="cb54-3" class="hljs-ln-code"><a href=""></a>ke_chirts <span class="ot">&lt;-</span> <span class="fu">classify</span>(ke_chirts, m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb54-2" class="hljs-ln-code"><a href=""></a>ke_chirts <span class="ot">&lt;-</span> <span class="fu">subst</span>(ke_chirts, <span class="sc">-</span><span class="dv">9999</span>, <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -1955,13 +1954,12 @@
 </ul>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55" data-code-line-numbers="|6|7"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb55-1" class="hljs-ln-code"><a href=""></a><span class="co"># Reclassify missing values</span></span>
-<span id="cb55-2" class="hljs-ln-code"><a href=""></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">9999</span>, <span class="cn">NA</span>), <span class="at">nrow =</span> <span class="dv">1</span>)</span>
-<span id="cb55-3" class="hljs-ln-code"><a href=""></a>ke_chirts <span class="ot">&lt;-</span> <span class="fu">classify</span>(ke_chirts, m)</span>
-<span id="cb55-4" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb55-5" class="hljs-ln-code"><a href=""></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb55-6" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_chirts[[<span class="dv">1</span>]], <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb55-7" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_borders, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"#4c4c4c"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55" data-code-line-numbers="|5|6"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb55-1" class="hljs-ln-code"><a href=""></a><span class="co"># Reclassify missing values</span></span>
+<span id="cb55-2" class="hljs-ln-code"><a href=""></a>ke_chirts <span class="ot">&lt;-</span> <span class="fu">subst</span>(ke_chirts, <span class="sc">-</span><span class="dv">9999</span>, <span class="cn">NA</span>)</span>
+<span id="cb55-3" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb55-4" class="hljs-ln-code"><a href=""></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb55-5" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_chirts[[<span class="dv">1</span>]], <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb55-6" class="hljs-ln-code"><a href=""></a>  <span class="fu">layer_spatial</span>(ke_borders, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"#4c4c4c"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mapping-with-raster-data-2" class="slide level2" data-auto-animate="true">
@@ -2318,20 +2316,7 @@
 </section></section>
 <section id="r-demo-5" class="title-slide slide level1 center">
 <h1>R Demo</h1>
-<p>Vector aggregation 🌍</p>
-<aside class="notes">
-<p>have people plot maps with different UTM coordinates to see how it changes the projection visually</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>Projections 🌍</p>
 </section>
 
 <section id="questions-5" class="title-slide slide level1 center">
@@ -2434,53 +2419,6 @@
 </div>
 </div>
 </div>
-<!-- ## 2. Count of hot days -->
-<!-- -   Another option: days above a threshold temperature -->
-<!-- -   We can apply operations to all of our raster cells at once: -->
-<!-- ::: {.fragment .fade-in} -->
-<!-- ```{r} -->
-<!-- # Get a binary indicator of whether each cell is above 35 degrees -->
-<!-- ke_bin <- ke_chirts > 35 -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ## 2. Count of hot days -->
-<!-- :::{.nonincremental} -->
-<!-- -   Another option: days above a threshold temperature -->
-<!-- -   We can do simple operations to all of our raster cells at once: -->
-<!-- ::: -->
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- #| fig-align: center -->
-<!-- # Get a binary indicator of whether each cell is above -->
-<!-- ggplot() + -->
-<!--   layer_spatial( -->
-<!--     mask(ke_bin[[1]], ke_borders), -->
-<!--     alpha = 0.9 -->
-<!--   ) + -->
-<!--   layer_spatial(ke_borders, fill = NA, color = "#4c4c4c", linewidth = 0.5) + -->
-<!--   labs(title = "Areas above 35°C", subtitle = "January 1, 2013", fill = "") + -->
-<!--   scale_fill_manual(values = c("#d6d6d6", "#872e38"), na.translate = FALSE) -->
-<!-- ``` -->
-<!-- ## 2. Count of hot days -->
-<!-- -   Now we can sum to count the number of days above 35 degrees -->
-<!-- :::{.fragment .fade-in} -->
-<!-- ```{r} -->
-<!-- ke_count_above_35 <- sum(ke_bin) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ## 2. Count of hot days -->
-<!-- :::{.nonincremental} -->
-<!-- -   Now we can count the number of days above 35 degrees by summing: -->
-<!-- ::: -->
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- #| fig-align: center -->
-<!-- ggplot() + -->
-<!--   layer_spatial(mask(ke_count_above_35, ke_borders), alpha = 0.9) + -->
-<!--   layer_spatial(ke_borders, fill = NA, color = "#444444") + -->
-<!--   labs(title = "Number of days above 35°C", subtitle = "Kenya, 2013", fill = "") + -->
-<!--   scale_fill_chirts_c() -->
-<!-- ``` -->
 </section>
 <section id="monthly-aggregation" class="slide level2">
 <h2>Monthly aggregation</h2>
@@ -2888,19 +2826,6 @@
 <section id="r-demo-6" class="title-slide slide level1 center">
 <h1>R Demo</h1>
 <p>Raster aggregation 🌍</p>
-<aside class="notes">
-<p>A heatwave definition/more complex temporal agg</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 
 <section id="questions-7" class="title-slide slide level1 center">
