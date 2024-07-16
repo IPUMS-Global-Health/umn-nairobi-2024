@@ -44,8 +44,8 @@ ke_dhs |>
 
 # Our IVs will be FLOOR, TOILETTYPE, DRINKWTR, FEVRECENT, DIARRECENT
 # 
-# Identify whether these variables may need any modifications before being
-# used.
+# Explore these variables to identify whether they may need any modifications 
+# before being used in analysis.
 #
 # Some useful tools:
 # - Basic R (unique(), range(), etc.)
@@ -55,5 +55,5 @@ ke_dhs |>
 
 # 3.3 ---------
 
-# If any of the above variables need additional cleaning, try to write some code
+# If any of the above variables need additional cleaning, try to write code
 # to prepare the variables accordingly.

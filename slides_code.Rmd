@@ -705,3 +705,4 @@ ke_dhs_chirts |>
 ggplot(ke_dhs_chirts) +
   geom_point(aes(x = MEAN_TEMP, y = BIRTHWT), alpha = 0.5, size = 2)
 ```
+

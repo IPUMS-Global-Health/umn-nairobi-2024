@@ -128,13 +128,13 @@ source("R/utils.R")
 # Outline
 
 1.  Setup
-2.  Introduction to DHS survey data
-3.  Work with DHS GPS coordinates
-4.  Visualize spatial data
+2.  Introduction to R
+3.  Introduction to DHS survey data
+4.  Work with DHS GPS coordinates
 5.  Work with CHIRTS temperature data
 6.  Aggregate spatial data
-7.  Link climate data and DHS surveys
-8.  Build a multilevel model to assess climate impacts
+6.  Link climate data and DHS surveys
+7.  Build a multilevel model to assess climate impacts
 
 # 1. Setup
 
@@ -2617,14 +2617,4 @@ are they useful?
 
 # Questions?
 
-# 8. Multilevel modeling
-
-This and beyond is going to come from Kat/Becca
-
-# R demo
-
-Building a model 📈
-
-# Questions?
-
-# Thank you + acknowledgemnts
+# 8. Multilevel modeling is next!

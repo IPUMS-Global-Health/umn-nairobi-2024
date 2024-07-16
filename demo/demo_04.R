@@ -67,8 +67,9 @@ joined <- st_join(
   left = FALSE
 )
 
-plot(joined[, 1])
-
+ggplot() +
+  layer_spatial(ke_borders) +
+  layer_spatial(joined)
 
 # Exercises --------------------------------------------------------------------
 

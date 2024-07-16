@@ -89,7 +89,7 @@ ggplot(ke_dhs) +
 ggplot(ke_dhs) +
   geom_bar(aes(x = WEALTHQ))
 
-# We can add visual aesthetics as well
+# We can add visual features as well
 ggplot(ke_dhs) +
   geom_bar(aes(x = WEALTHQ), fill = "blue", alpha = 0.4)
 

@@ -136,7 +136,7 @@ plot(gps_rast)
 # is the difference between the maximum and the minimum value for each cell.
 # Plot the result (if you have extra time, use ggspatial)
 #
-# How does the map from 1a compare if you take the standard deviation of the
+# How does the map compare if you take the standard deviation of the
 # raster cells instead of the range? (Hint: see `?terra::stdev`)
 
 # 5.2 ---------
